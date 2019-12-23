@@ -55,28 +55,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable hornet.service
 echo -e $TEXT_YELLOW && echo "Starting hornet node! (please note this can may take a while)" && echo -e $TEXT_RESET
 sudo systemctl start hornet
-echo -e $TEXT_YELLOW && echo "Loading live log and finish installation..." && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "Loading live log and finish installation...(can be skipped with 'strg + c'" && echo -e $TEXT_RESET
 sudo journalctl -fu hornet
 echo -e $TEXT_RED_B && echo "Finish up hornet installation..." && echo -e $TEXT_RESET
-
-proxy=n
-read -p "You want set up a reverse proxy? (y/N): " proxy
-if [ $proxy == y ]
-    echo -e $TEXT_YELLOW && echo "Setting up reverse proxy..." && echo -e $TEXT_RESET
-    sudo add-apt-repository ppa:certbot/certbot
-    sudo apt install python-certbot-nginx -You
-    sudo apt update > /dev/null && sudo apt dist-upgrade -y > /dev/null && sudo apt upgrade -y > /dev/null && sudo apt autoremove -y > /dev/null
-    sudo cat config/nginx.conf > /etc/nginx/site-available/default
-    sudo systemctl restart nginx
-    sudo certbot --nginx -d $domain
-    echo -e $TEXT_YELLOW && echo "Finish reverse proxy setup..." && echo -e $TEXT_RESET
-fi
-
-
-read -p "You want to add your node to Tangle Bay? (y/N): " tbadd
-tbadd=n
-if [ $tbadd == y ]
-    echo -e $TEXT_YELLOW && echo "Adding node to Tangle Bay..." && echo -e $TEXT_RESET
-    curl https://community.tanglebay.org/nodes -X POST -H 'Content-type: application/json' -d '{"name": $name, "url": "https://$domain:$port", "pow": $pow}' |jq
-fi
 exit 0
