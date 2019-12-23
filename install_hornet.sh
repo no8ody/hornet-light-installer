@@ -6,6 +6,7 @@
 ############################################################################################################################################################
 ############################################################################################################################################################
 source config/config.sh
+sudo apt install wget tar nano curl jq -y > /dev/null
 version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 version="${version:1}"
 
@@ -14,7 +15,6 @@ TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 
 echo -e $TEXT_YELLOW && echo "Starting installation of hornet" && echo -e $TEXT_RESET
-sudo apt install wget tar nano curl jq -y > /dev/null
 sudo useradd -m $user
 sudo -u $user mkdir /home/$user/hornet
 
