@@ -5,7 +5,7 @@
 # CONFIG FOR HORNET INSTALLER
 ####################################################################
 
-# Please configure your settings below
+# ARM = Raspberry PI3+/4 | x86_64 = VPS
 os=ARM
 
 # You can specify a own username for the hornet node
