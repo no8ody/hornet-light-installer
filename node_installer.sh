@@ -6,7 +6,7 @@
 ############################################################################################################################################################
 ############################################################################################################################################################
 source config.sh
-version="$(curl -s https://api.github.com/repos/iotaledger/iri/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
+version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 version="${version:1}"
 
 TEXT_RESET='\e[0m'
