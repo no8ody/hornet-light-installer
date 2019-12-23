@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Bitte lege hier deine Konfiguration fest
+# Please configure your settings below
 user=iota
 os=ARM
 version=0.2.9
