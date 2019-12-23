@@ -13,15 +13,16 @@ user=iota   # You can specify a own username for the hornet node
 ############################################################################################################################################################
 # DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
-
-source config/config.sh
-sudo apt install nano curl jq -y > /dev/null
-version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
-version="${version:1}"
-
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
+
+
+source config/config.sh
+echo -e $TEXT_YELLOW && echo "Installing necessary packages... (Please note this can may take up a while)" && echo -e $TEXT_RESET
+sudo apt install nano curl jq -y > /dev/null
+version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
+version="${version:1}"
 
 echo -e $TEXT_YELLOW && echo "Starting installation of hornet" && echo -e $TEXT_RESET
 sudo useradd -m $user
@@ -64,9 +65,13 @@ sudo echo "Alias=hornet.service" >> $service
 echo -e $TEXT_YELLOW && echo "Activate hornet service..." && echo -e $TEXT_RESET
 sudo systemctl daemon-reload
 sudo systemctl enable hornet.service
-echo -e $TEXT_YELLOW && echo "Starting hornet node! (please note this can may take a while)" && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "Starting hornet node! (please note this can may take up a while)" && echo -e $TEXT_RESET
 sudo systemctl start hornet
-echo -e $TEXT_YELLOW && echo "Loading live log and finish installation...(can be skipped with 'strg + c'" && echo -e $TEXT_RESET
-sudo journalctl -fu hornet
-echo -e $TEXT_RED_B && echo "Finish up hornet installation..." && echo -e $TEXT_RESET
+livelog=N
+echo -e $TEXT_YELLOW && read -p 'Would you like to see the live log now? (y/N): ' livelog
+echo -e $TEXT_RESET
+if [ $livelog == y | $livelog == Y ]
+    sudo journalctl -fu hornet
+fi
+echo -e $TEXT_RED_B && echo "Finish up hornet installation...done. Bye bye!" && echo -e $TEXT_RESET
 exit 0
