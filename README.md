@@ -1,13 +1,15 @@
-**Hornet Lightwight Installer**
+# Hornet Lightwight Installer #
 
-Download the latest release version of the script and run it.
+**Download the latest release version of the script and run it. Do the following steps:**
 
-`sudo wget https://github.com/TangleBay/hornet_light_installer/releases/download/v0.0.2/hornet_light_installer.tar.gz && sudo tar -xzf hornet_light_installer.tar.gz && cd hornet_light_installer && sudo ./install_hornet.sh`
+1. `sudo wget -O install_hornet.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/install_hornet.sh`
+2. `sudo chmod +x install_hornet.sh`
+3. `sudo ./install_hornet.sh`
 
-After your node is running you need to add some neighbors in the config.json file
+**After your node is running you need to add some neighbors in the config.json file**
 
 `sudo nano /home/iota/hornet/config.json`
 
-After you have added some neighbors just restart the node to get sync
+**After you have added some neighbors just restart the node to get sync**
 
 `sudo systemctl restart hornet`

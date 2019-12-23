@@ -10,15 +10,10 @@ user=iota   # You can specify a own username for the hornet node
 
 
 
-
-
-
-
-############################################################################################################################################################
 ############################################################################################################################################################
 # DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
-############################################################################################################################################################
+
 source config/config.sh
 sudo apt install nano curl jq -y > /dev/null
 version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
@@ -40,7 +35,7 @@ sudo tar -xzf /tmp/HORNET-"$version"_Linux_"$os".tar.gz -C /tmp  > /dev/null
 sudo mv /tmp/HORNET-"$version"_Linux_"$os"/* /home/$user/hornet/  > /dev/null
 sudo rm -r /tmp/HORNET-"$version"_Linux_"$os"*  > /dev/null
 sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin  > /dev/null
-sudo wget -O /home/$user/hornet/config.json  > /dev/null
+sudo wget -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/config.json > /dev/null
 sudo -u $user mkdir /home/$user/hornet/mainnetdb  > /dev/null
 sudo chown -R $user:$user /home/$user/hornet  > /dev/null
 sudo chmod 770 /home/$user/hornet/hornet  > /dev/null
