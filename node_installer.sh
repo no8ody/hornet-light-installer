@@ -30,7 +30,7 @@ sudo wget -O /tmp/HORNET-"$version"_Linux_"$os".tar.gz https://github.com/gohorn
 sudo tar -xzf /tmp/HORNET-"$version"_Linux_"$os".tar.gz -C /tmp  > /dev/null
 sudo mv /tmp/HORNET-"$version"_Linux_"$os"/* /home/$user/hornet/  > /dev/null
 sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin  > /dev/null
-sudo cp ./config/config.json /home/$user/hornet/config.json
+#sudo cp ./config/config.json /home/$user/hornet/config.json
 sudo -u $user mkdir /home/$user/hornet/mainnetdb  > /dev/null
 sudo chown -R $user:$user /home/$user/hornet  > /dev/null
 sudo chmod 770 /home/$user/hornet/hornet  > /dev/null
