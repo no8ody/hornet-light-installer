@@ -19,7 +19,7 @@ TEXT_RED_B='\e[1;31m'
 
 
 source config/config.sh
-echo -e $TEXT_YELLOW && echo "Installing necessary packages... (Please note this can may take up a while)" && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
 sudo apt install nano curl jq -y > /dev/null
 version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 version="${version:1}"
@@ -65,7 +65,7 @@ sudo echo "Alias=hornet.service" >> $service
 echo -e $TEXT_YELLOW && echo "Activate hornet service..." && echo -e $TEXT_RESET
 sudo systemctl daemon-reload
 sudo systemctl enable hornet.service
-echo -e $TEXT_YELLOW && echo "Starting hornet node! (please note this can may take up a while)" && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "Starting hornet node! (Please note that this may take some time)" && echo -e $TEXT_RESET
 sudo systemctl start hornet
 livelog=N
 echo -e $TEXT_YELLOW && read -p 'Would you like to see the live log now? (y/N): ' livelog
