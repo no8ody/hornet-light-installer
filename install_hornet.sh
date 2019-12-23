@@ -6,7 +6,7 @@
 ############################################################################################################################################################
 ############################################################################################################################################################
 source config/config.sh
-sudo apt install wget tar nano curl jq -y > /dev/null
+sudo apt install nano curl jq -y > /dev/null
 version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 version="${version:1}"
 
@@ -16,7 +16,9 @@ TEXT_RED_B='\e[1;31m'
 
 echo -e $TEXT_YELLOW && echo "Starting installation of hornet" && echo -e $TEXT_RESET
 sudo useradd -m $user
-sudo -u $user mkdir /home/$user/hornet
+sudo mkdir /home/$user > /dev/null && sudo chown $user:$user /home/$user
+sudo usermod -d /home/$user -m $user > /dev/null
+sudo -u $user mkdir /home/$user/hornet > /dev/null
 
 echo -e $TEXT_YELLOW && echo "Downloading hornet files..." && echo -e $TEXT_RESET
 sudo wget -O /tmp/HORNET-"$version"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$version/HORNET-"$version"_Linux_"$os".tar.gz > /dev/null
@@ -24,7 +26,7 @@ sudo tar -xzf /tmp/HORNET-"$version"_Linux_"$os".tar.gz -C /tmp  > /dev/null
 sudo mv /tmp/HORNET-"$version"_Linux_"$os"/* /home/$user/hornet/  > /dev/null
 sudo rm -r /tmp/HORNET-"$version"_Linux_"$os"*  > /dev/null
 sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin  > /dev/null
-sudo cp ./config/hornet.conf /home/$user/hornet/config.json
+sudo cp ./config/hornet.conf /home/$user/hornet/config.json > /dev/null
 sudo -u $user mkdir /home/$user/hornet/mainnetdb  > /dev/null
 sudo chown -R $user:$user /home/$user/hornet  > /dev/null
 sudo chmod 770 /home/$user/hornet/hornet  > /dev/null
