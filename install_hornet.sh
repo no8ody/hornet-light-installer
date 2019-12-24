@@ -67,11 +67,11 @@ sudo systemctl daemon-reload
 sudo systemctl enable hornet.service
 echo -e $TEXT_YELLOW && echo "Starting hornet node! (Please note that this may take some time)" && echo -e $TEXT_RESET
 sudo systemctl start hornet
-livelog=N
-echo -e $TEXT_YELLOW && read -p 'Would you like to see the live log now? (y/N): ' livelog
-echo -e $TEXT_RESET
-if [ $livelog == "y" | $livelog == "Y" ]
-    sudo journalctl -fu hornet
-fi
+#livelog=N
+#echo -e $TEXT_YELLOW && read -p 'Would you like to see the live log now? (y/N): ' livelog
+#echo -e $TEXT_RESET
+#if [ $livelog == "y" | $livelog == "Y" ]
+#    sudo journalctl -fu hornet
+#fi
 echo -e $TEXT_RED_B && echo "Finish up hornet installation...done. Bye bye!" && echo -e $TEXT_RESET
 exit 0
