@@ -4,10 +4,23 @@
 # CONFIG FOR HORNET INSTALLER
 ############################################################################################################################################################
 
-
 os=ARM      # ARM = Raspberry PI3+/4 | x86_64 = VPS
 user=iota   # You can specify a own username for the hornet node
 
+
+############################################################################################################################################################
+# CONFIG FOR PROXY INSTALLER
+############################################################################################################################################################
+
+domain=
+
+############################################################################################################################################################
+# CONFIG FOR TANGLE BAY
+############################################################################################################################################################
+
+port=14266
+pow=true
+password=null
 
 
 ############################################################################################################################################################
@@ -17,8 +30,7 @@ TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 
-
-source config/config.sh
+source config
 echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
 sudo apt install nano curl jq -y > /dev/null
 version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
@@ -36,7 +48,7 @@ sudo tar -xzf /tmp/HORNET-"$version"_Linux_"$os".tar.gz -C /tmp  > /dev/null
 sudo mv /tmp/HORNET-"$version"_Linux_"$os"/* /home/$user/hornet/  > /dev/null
 sudo rm -r /tmp/HORNET-"$version"_Linux_"$os"*  > /dev/null
 sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin  > /dev/null
-sudo wget -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/config.json > /dev/null
+sudo wget -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/hornet/config.json > /dev/null
 sudo -u $user mkdir /home/$user/hornet/mainnetdb  > /dev/null
 sudo chown -R $user:$user /home/$user/hornet  > /dev/null
 sudo chmod 770 /home/$user/hornet/hornet  > /dev/null
@@ -67,11 +79,28 @@ sudo systemctl daemon-reload
 sudo systemctl enable hornet.service
 echo -e $TEXT_YELLOW && echo "Starting hornet node! (Please note that this may take some time)" && echo -e $TEXT_RESET
 sudo systemctl start hornet
-#livelog=N
-#echo -e $TEXT_YELLOW && read -p 'Would you like to see the live log now? (y/N): ' livelog
-#echo -e $TEXT_RESET
-#if [ $livelog == "y" | $livelog == "Y" ]
-#    sudo journalctl -fu hornet
-#fi
+echo -e $TEXT_YELLOW && read -p 'Would you like to see the live log now? (y/N): ' livelog
+echo -e $TEXT_RESET
+if [ $livelog == "y" | $livelog == "Y" ] then
+    sudo journalctl -fu hornet
+fi
+echo -e $TEXT_YELLOW && read -p 'Would you like to download the update script? (y/N): ' updatehornet
+echo -e $TEXT_RESET
+if [ $updatehornet == "y" | $updatehornet == "Y" ] then
+    sudo wget -O update_hornet.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/update_hornet.sh
+    sudo chmod +x update_hornet.sh
+fi
+echo -e $TEXT_YELLOW && read -p 'Would you like to download the proxy installer script? (y/N): ' proxy
+echo -e $TEXT_RESET
+if [ $proxy == "y" | $proxy == "Y" ] then
+    sudo wget -O install_proxy.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/install_proxy.sh
+    sudo chmod +x install_proxy.sh
+fi
+echo -e $TEXT_YELLOW && read -p 'Would you like to download the tanglebay add to swarm script? (y/N): ' tanglebay
+echo -e $TEXT_RESET
+if [ $tanglebay == "y" | $tanglebay == "Y" ] then
+    sudo wget -O join_tb.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/join_tb.sh
+    sudo chmod +x join_tb.sh
+fi
 echo -e $TEXT_RED_B && echo "Finish up hornet installation...done. Bye bye!" && echo -e $TEXT_RESET
 exit 0
