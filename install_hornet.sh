@@ -81,24 +81,24 @@ echo -e $TEXT_YELLOW && echo "Starting hornet node! (Please note that this may t
 sudo systemctl start hornet
 echo -e $TEXT_YELLOW && read -p 'Would you like to see the live log now? (y/N): ' livelog
 echo -e $TEXT_RESET
-if [ $livelog == "y" | $livelog == "Y" ] then
+if [ $livelog == y | $livelog == Y ] ; then
     sudo journalctl -fu hornet
 fi
 echo -e $TEXT_YELLOW && read -p 'Would you like to download the update script? (y/N): ' updatehornet
 echo -e $TEXT_RESET
-if [ $updatehornet == "y" | $updatehornet == "Y" ] then
+if [ $updatehornet == y | $updatehornet == Y ] ; then
     sudo wget -O update_hornet.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/update_hornet.sh
     sudo chmod +x update_hornet.sh
 fi
 echo -e $TEXT_YELLOW && read -p 'Would you like to download the proxy installer script? (y/N): ' proxy
 echo -e $TEXT_RESET
-if [ $proxy == "y" | $proxy == "Y" ] then
+if [ $proxy == y | $proxy == Y ] ; then
     sudo wget -O install_proxy.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/install_proxy.sh
     sudo chmod +x install_proxy.sh
 fi
 echo -e $TEXT_YELLOW && read -p 'Would you like to download the tanglebay add to swarm script? (y/N): ' tanglebay
 echo -e $TEXT_RESET
-if [ $tanglebay == "y" | $tanglebay == "Y" ] then
+if [ $tanglebay == y | $tanglebay == Y ] ; then
     sudo wget -O join_tb.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/join_tb.sh
     sudo chmod +x join_tb.sh
 fi
