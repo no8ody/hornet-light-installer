@@ -1,5 +1,5 @@
 #!/bin/bash
-source install_hornet.sh
+source config.sh
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
