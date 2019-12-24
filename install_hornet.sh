@@ -1,14 +1,20 @@
 #!/bin/bash
 
 ############################################################################################################################################################
+# CONFIG FOR HORNET INSTALLER
+############################################################################################################################################################
+
+os=ARM      # ARM = Raspberry PI3+/4 | x86_64 = VPS
+user=iota   # You can specify a own username for the hornet node
+
+
+############################################################################################################################################################
 # DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 
-wget -O config.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/config.sh
-source config.sh
 echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
 sudo apt install nano curl jq -y > /dev/null
 version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
@@ -32,13 +38,9 @@ sudo chown -R $user:$user /home/$user/hornet  > /dev/null
 sudo chmod 770 /home/$user/hornet/hornet  > /dev/null
 
 
-echo -e $TEXT_YELLOW && echo "Downloading extendet scripts..." && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "Downloading update script..." && echo -e $TEXT_RESET
 sudo wget -O update_hornet.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/update_hornet.sh
-sudo chmod +x update_hornet.sh
-sudo wget -O install_proxy.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/install_proxy.sh
-sudo chmod +x install_proxy.sh
-sudo wget -O join_tb.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/join_tb.sh
-sudo chmod +x join_tb.sh
+sudo chmod +x update_hornet.sh && chown $user:$user update_hornet.sh
 
 echo -e $TEXT_YELLOW && echo "Creating service for hornet..." && echo -e $TEXT_RESET
 service=/lib/systemd/system/hornet.service
@@ -66,6 +68,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable hornet.service
 echo -e $TEXT_YELLOW && echo "Starting hornet node! (Please note that this may take some time)" && echo -e $TEXT_RESET
 sudo systemctl start hornet
-
+sudo systemctl status hornet
 echo -e $TEXT_RED_B && echo "Finish up hornet installation...done. Bye bye!" && echo -e $TEXT_RESET
 exit 0
