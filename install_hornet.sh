@@ -39,11 +39,6 @@ sudo -u $user mkdir /home/$user/hornet/mainnetdb  > /dev/null
 sudo chown -R $user:$user /home/$user/hornet  > /dev/null
 sudo chmod 770 /home/$user/hornet/hornet  > /dev/null
 
-
-echo -e $TEXT_YELLOW && echo "Downloading update script..." && echo -e $TEXT_RESET
-sudo wget -O update_hornet.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/update_hornet.sh
-sudo chmod +x update_hornet.sh && chown $user:$user update_hornet.sh
-
 echo -e $TEXT_YELLOW && echo "Creating service for hornet..." && echo -e $TEXT_RESET
 service=/lib/systemd/system/hornet.service
 sudo echo "[Unit]" > $service
