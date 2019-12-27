@@ -149,11 +149,13 @@ if [ "$selector" = "3" ]; then
 
     echo -e $TEXT_YELLOW && echo "Starting SSL-Certificate installation..." && echo -e $TEXT_RESET
     sudo certbot --nginx -d $domain
-    sslcertpath=ssl_certificate /etc/letsencrypt/live/$domain/fullchain.pem;
-    sslcertkeypath=ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem;
-    
-    sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/##SSLCERT/'$sslcertpath'/g' {} \;
-    sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/##SSLCERTKEY/'$sslcertkeypath'/g' {} \;
+
+    sslcertpath="ssl_certificate /etc/letsencrypt/live/$domain/fullchain.pem;"
+    sslcertkeypath="ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem;"
+    sed -i "81i $sslcertpath" /etc/nginx/sites-available/default
+    sed -i "82i $sslcertkeypath" /etc/nginx/sites-available/default
+    sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/domain.tld/'$domain'/g' {} \;
+    sudo systemctl restart nginx
     echo -e $TEXT_RED_B && echo "Reverse proxy installation finished... Bye!" && echo -e $TEXT_RESET
     exit 0
 fi
