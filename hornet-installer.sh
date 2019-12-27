@@ -45,7 +45,7 @@ echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && read -p "Please type in the number: " selector
 echo -e $TEXT_RESET
 
-if [ "$selector" = "1"] ; then
+if [ "$selector" = "1" ] ; then
 	echo -e $TEXT_YELLOW && echo "Get latest hornet version..." && echo -e $TEXT_RESET
 	version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 	version="${version:1}"
