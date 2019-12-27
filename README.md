@@ -2,7 +2,7 @@
 
 **Download the latest release version of the script and run it. Do the following steps:**
 
-1. `sudo wget -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/hornet-installer.sh`
+1. `sudo wget -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh`
 2. `sudo chmod +x install_hornet.sh`
 3. Edit your preferences in the config section: `sudo nano hornet-installer.sh` 
 4. Run the installer: `sudo ./hornet-installer.sh`
