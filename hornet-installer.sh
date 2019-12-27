@@ -25,13 +25,21 @@ pow=true                        # Set if your node should do proof of work in th
 password=""                     # Set your password after adding your node so you can remove it later
 
 
+
+
+
+
 ############################################################################################################################################################
-# DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
+# DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
+############################################################################################################################################################
+############################################################################################################################################################
+
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 clear
+
 echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer!" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && echo "Please choose what you want to do:" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW
