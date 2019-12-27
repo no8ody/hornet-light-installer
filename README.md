@@ -1,5 +1,8 @@
 # Hornet Lightwight Installer #
 
+## Please note that you use this script at your own risk and that I will not be liable for any damages that may occur ##
+
+
 **Download the latest release version of the script and run it. Do the following steps:**
 
 1. `sudo wget -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh`
