@@ -83,7 +83,7 @@ if [ "$selector" = "2" ]; then
     sudo mv /tmp/HORNET-"$version"_Linux_"$os"/* /home/$user/hornet/
     sudo rm -r /tmp/HORNET-"$version"_Linux_"$os"*
     sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
-    sudo wget -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/configs/hornet.conf
+    sudo wget -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/hornet.conf
     sudo -u $user mkdir /home/$user/hornet/mainnetdb
     sudo chown -R $user:$user /home/$user/hornet
     sudo chmod 770 /home/$user/hornet/hornet
@@ -133,7 +133,7 @@ if [ "$selector" = "3" ]; then
     sudo systemctl daemon-reload
 
     echo -e $TEXT_YELLOW && echo "Downloading Nginx configuration..." && echo -e $TEXT_RESET
-    sudo wget -O /etc/nginx/sites-available/default https://raw.githubusercontent.com/TangleBay/hornet_light_installer/master/configs/nginx.conf
+    sudo wget -O /etc/nginx/sites-available/default https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/nginx.conf
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/domain.tld/'$domain'/g' {} \;
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/14266/'$trinityport'/g' {} \;
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/14267/'$dashport'/g' {} \;
