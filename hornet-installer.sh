@@ -161,12 +161,13 @@ if [ "$selector" = "3" ]; then
 fi
 
 if [ "$selector" = "4" ]; then
-    curl https://community.tanglebay.org/nodes -X POST -H 'Content-type: application/json' -d '{"name": $name, "url": "https://$domain:$trinityport", "pow": $pow}' |jq
+    domain2=https://$domain:$trinityport
+    curl -X POST "https://community.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"pow\": \"$pow\" }" |jq
     exit 0
 fi
 
 if [ "$selector" = "5" ]; then
-	curl -X DELETE http://community.tanglebay.org/nodes/$password
+	curl -X DELETE https://community.tanglebay.org/nodes/$password |jq
 fi
 
 if [ "$selector" = "6" ]; then
