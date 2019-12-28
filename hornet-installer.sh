@@ -45,10 +45,11 @@ echo -e $TEXT_YELLOW && echo "Please choose what you want to do:" && echo -e $TE
 echo -e $TEXT_YELLOW
 echo "1) Update the hornet node"
 echo "2) Install the hornet node"
-echo "3) Install the reverse proxy"
-echo "4) Add your node to Tangle Bay"
-echo "5) Remove your node from Tangle Bay"
-echo "6) Exit"
+echo "3) Reset Database"
+echo "4) Install the reverse proxy"
+echo "5) Add your node to Tangle Bay"
+echo "6) Remove your node from Tangle Bay"
+echo "7) Exit"
 echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && read -p "Please type in the number: " selector
 echo -e $TEXT_RESET
@@ -129,6 +130,15 @@ if [ "$selector" = "2" ]; then
 fi
 
 if [ "$selector" = "3" ]; then
+    sudo systemctl stop hornet
+    sudo rm -r /home/$user/hornet/mainnetdb/*
+    sudo rm /home/$user/hornet/latest-export.gz.bin
+    sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
+    sudo systemctl start hornet
+    exit 0
+fi
+
+if [ "$selector" = "4" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
     sudo apt install software-properties-common curl jq -y
     sudo add-apt-repository ppa:certbot/certbot -y
@@ -160,17 +170,17 @@ if [ "$selector" = "3" ]; then
     exit 0
 fi
 
-if [ "$selector" = "4" ]; then
+if [ "$selector" = "5" ]; then
     domain2=https://$domain:$trinityport
     curl -X POST "https://community.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"pow\": \"$pow\" }" |jq
     exit 0
 fi
 
-if [ "$selector" = "5" ]; then
+if [ "$selector" = "6" ]; then
 	curl -X DELETE https://community.tanglebay.org/nodes/$password |jq
 fi
 
-if [ "$selector" = "6" ]; then
+if [ "$selector" = "7" ]; then
     exit 0
 fi
 exit 0
