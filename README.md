@@ -12,14 +12,6 @@
 6. With the first start no config is detected and it will downloaded automatically and opened to edit.
 7. Re-run the installer again after editing the config.sh file `sudo ./hornet-installer.sh`
 
-**After your node is running you need to add some neighbors in the config.json file**
-
-`sudo nano /home/iota/hornet/config.json`
-
-**After you have added some neighbors just restart the node to get sync**
-
-`sudo systemctl restart hornet`
-
 
 # Install reverse proxy #
 

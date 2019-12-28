@@ -90,6 +90,12 @@ if [ "$selector" = "2" ]; then
     sudo rm -r /tmp/HORNET-"$version"_Linux_"$os"*
     sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
     sudo wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/hornet.conf
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"light"/'\"$profile\"'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor1:15600/'$neighbor1'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor2:15600/'$neighbor2'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor3:15600/'$neighbor3'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor4:15600/'$neighbor4'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor5:15600/'$neighbor5'/g' {} \;
     sudo -u $user mkdir /home/$user/hornet/mainnetdb
     sudo chown -R $user:$user /home/$user/hornet
     sudo chmod 770 /home/$user/hornet/hornet
