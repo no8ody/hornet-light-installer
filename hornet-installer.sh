@@ -16,6 +16,8 @@ if ! [ -x "$(command -v curl)" ]; then
     clear
 fi
 
+echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer!" && echo -e $TEXT_RESET
+
 latestversion="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 currentversion=0.0.1
 if [ "$currentversion" != "$latestversion" ]; then
@@ -36,7 +38,6 @@ if [ ! -f "config.sh" ]; then
 fi
 
 source config.sh
-echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer!" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && echo "Please choose what you want to do:" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW
 echo "1) Update the hornet node"
