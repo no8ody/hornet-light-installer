@@ -15,11 +15,15 @@ if ! [ -x "$(command -v curl)" ]; then
     sudo apt install curl -y > /dev/null
     clear
 fi
+if ! [ -x "$(command -v jq)" ]; then
+    sudo apt install jq -y > /dev/null
+    clear
+fi
 
 echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer!" && echo -e $TEXT_RESET
-
 latestversion="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 currentversion=0.0.2
+
 if [ "$currentversion" != "$latestversion" ]; then
     echo -e $TEXT_RED_B && echo "New version available! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
@@ -46,6 +50,12 @@ if [ ! -f "config.sh" ]; then
     exit 0
 fi
 
+nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
+latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
+latesthornet="${latesthornet:1}"
+echo -e $TEXT_YELLOW && echo Current: $nodev && echo $TEXT_RESET
+echo $TEXT_RED_B && echo Latest: \"$latesthornet\" && echo $TEXT_RESET
+
 source config.sh
 echo -e $TEXT_YELLOW && echo "Please choose what you want to do:" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW
@@ -63,16 +73,13 @@ echo -e $TEXT_RESET
 
 if [ "$selector" = "1" ] ; then
 	echo -e $TEXT_YELLOW && echo "Get latest hornet version..." && echo -e $TEXT_RESET
-	version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
-	version="${version:1}"
-	echo -e $TEXT_RED_B && echo "Latest Version: $version" && echo -e $TEXT_RESET
 	echo -e $TEXT_YELLOW && echo "Stopping hornet node...(Please note that this may take some time)" && echo -e $TEXT_RESET
 	sudo systemctl stop hornet
 	echo -e $TEXT_YELLOW && echo "Downloading new hornet file..." && echo -e $TEXT_RESET
-	sudo wget -O /tmp/HORNET-"$version"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$version/HORNET-"$version"_Linux_"$os".tar.gz
-	sudo tar -xzf /tmp/HORNET-"$version"_Linux_"$os".tar.gz -C /tmp
-	sudo mv /tmp/HORNET-"$version"_Linux_"$os"/hornet /home/$user/hornet/
-	sudo rm -r /tmp/HORNET-"$version"_Linux_"$os"*
+	sudo wget -O /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_"$os".tar.gz
+	sudo tar -xzf /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz -C /tmp
+	sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/hornet /home/$user/hornet/
+	sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
 	sudo chown $user:$user /home/$user/hornet/hornet
 	sudo chmod 770 /home/$user/hornet/hornet
 	echo -e $TEXT_YELLOW && echo "Starting hornet node...(Please note that this may take some time)" && echo -e $TEXT_RESET
@@ -83,9 +90,7 @@ fi
 
 if [ "$selector" = "2" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
-    sudo apt install nano jq -y
-    version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
-    version="${version:1}"
+    sudo apt install nano -y
 
     echo -e $TEXT_YELLOW && echo "Starting installation of hornet" && echo -e $TEXT_RESET
     sudo useradd -m $user
@@ -94,10 +99,10 @@ if [ "$selector" = "2" ]; then
     sudo -u $user mkdir /home/$user/hornet
 
     echo -e $TEXT_YELLOW && echo "Downloading hornet files..." && echo -e $TEXT_RESET
-    sudo wget -O /tmp/HORNET-"$version"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$version/HORNET-"$version"_Linux_"$os".tar.gz
-    sudo tar -xzf /tmp/HORNET-"$version"_Linux_"$os".tar.gz -C /tmp
-    sudo mv /tmp/HORNET-"$version"_Linux_"$os"/* /home/$user/hornet/
-    sudo rm -r /tmp/HORNET-"$version"_Linux_"$os"*
+    sudo wget -O /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_"$os".tar.gz
+    sudo tar -xzf /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz -C /tmp
+    sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/* /home/$user/hornet/
+    sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
     sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
     sudo wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/hornet.conf
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"light"/'\"$profile\"'/g' {} \;

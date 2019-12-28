@@ -10,11 +10,16 @@
 # CONFIG FOR THE HORNET INSTALLER
 ############################################################################################################################################################
 
-os=ARM                      # ARM = Raspberry PI3+/4 (32bit) | x86_64 = VPS/Root (64bit)
-user=iota                   # You can specify a own username for the hornet node
-profile=auto                 # Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb) or default = auto
+# ARM = Raspberry PI3+/4 (32bit) | x86_64 = VPS/Root (64bit)
+os=ARM
 
-# If you cannot occupy one of the remaining slots, please leave the default values.
+# You can specify a own username for the hornet node
+user=iota
+
+# Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb) or default = auto
+profile=auto
+
+# If you cannot occupy one of the remaining slots, please leave the default values. You shouldn't have more than 5 neighbors.
 neighbor1=neighbor1.domain.tld:15600
 neighbor2=neighbor2.domain.tld:15600
 neighbor3=neighbor3.domain.tld:15600
@@ -26,18 +31,28 @@ neighbor5=neighbor5.domain.tld:15600
 # CONFIG FOR THE PROXY INSTALLER
 ############################################################################################################################################################
 
-domain=my.domain.tld   # Set your domain or your ddns name
-trinityport=14266      # Set your prefered Trinity port (this port must be exposed in your router if you want to reach it from outside)
-dashport=14267         # Set your prefered dashboard port (this port must be exposed in your router if you want to reach it from outside)
+# Set your domain or your ddns name
+domain=my.domain.tld
+
+# Set your prefered Trinity port (this port must be exposed in your router if you want to reach it from outside)
+trinityport=14266
+
+# Set your prefered dashboard port (this port must be exposed in your router if you want to reach it from outside)
+dashport=14267
 
 
 ############################################################################################################################################################
 # CONFIG FOR THE TANGLE BAY INSTALLER
 ############################################################################################################################################################
 
-name="My Awesome Hornet Node"   # Set your prefered shown node name
-pow=true                        # Set if your node should do proof of work in the pool
-password=""                     # Set your password after adding your node so you can remove it later
+# Set your prefered shown node name
+name="My Awesome Hornet Node"
+
+# Set if your node should do proof of work in the pool
+pow=true
+
+# Set your password after adding your node so you can remove it later
+password=""
 
 ############################################################################################################################################################
 ############################################################################################################################################################
