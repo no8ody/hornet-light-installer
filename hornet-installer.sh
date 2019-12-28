@@ -15,6 +15,7 @@ if [ ! -f "config.sh" ]; then
     echo -e $TEXT_YELLOW && echo "First run detected...Downloading config file!" && echo -e $TEXT_RESET
     sudo wget -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     sudo nano config.sh
+    echo -e $TEXT_RED_B && echo "Please re-run the hornet-installer!" && echo -e $TEXT_RESET
     exit 0
 fi
 
