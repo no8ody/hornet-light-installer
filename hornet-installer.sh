@@ -20,7 +20,7 @@ latestversion="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-ins
 currentversion=0.0.1
 if [ "$currentversion" != "$latestversion" ]; then
     echo -e $TEXT_RED_B && echo "New version available! Downloading new version..." && echo -e $TEXT_RESET
-    sudo wget -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh > /dev/null
+    sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
     sudo find hornet-installer.sh -type f -exec sed -i 's/'$currentversion'/'$latestversion'/g' {} \;
     echo -e $TEXT_YELLOW && echo "Please re-run the installer!" && echo -e $TEXT_RESET
@@ -88,7 +88,7 @@ if [ "$selector" = "2" ]; then
     sudo mv /tmp/HORNET-"$version"_Linux_"$os"/* /home/$user/hornet/
     sudo rm -r /tmp/HORNET-"$version"_Linux_"$os"*
     sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
-    sudo wget -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/hornet.conf
+    sudo wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/hornet.conf
     sudo -u $user mkdir /home/$user/hornet/mainnetdb
     sudo chown -R $user:$user /home/$user/hornet
     sudo chmod 770 /home/$user/hornet/hornet
@@ -153,7 +153,7 @@ if [ "$selector" = "4" ]; then
     sudo systemctl daemon-reload
 
     echo -e $TEXT_YELLOW && echo "Downloading Nginx configuration..." && echo -e $TEXT_RESET
-    sudo wget -O /etc/nginx/sites-available/default https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/nginx.conf
+    sudo wget -q -O /etc/nginx/sites-available/default https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/nginx.conf
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/domain.tld/'$domain'/g' {} \;
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/14266/'$trinityport'/g' {} \;
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/14267/'$dashport'/g' {} \;
