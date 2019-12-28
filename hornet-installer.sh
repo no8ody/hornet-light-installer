@@ -53,9 +53,9 @@ fi
 nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
+
 echo -e $TEXT_RED_B
-echo Current Hornet: $nodev
-echo Latest Hornet: \"$latesthornet\"
+echo Current Hornet: $nodev | Latest Hornet: \"$latesthornet\"
 echo -e $TEXT_RESET
 
 source config.sh
