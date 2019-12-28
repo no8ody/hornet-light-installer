@@ -3,7 +3,7 @@
 # Welcome to the Hornet leightweight installer!
 # Please enter your desired values into the configuration accordingly. Afterwards please run the script again.
 # If you have any questions about the individual steps, please have a look at the readme at https://github.com/TangleBay/hornet-light-installer.
-# Have fun with your Hornet node! 
+# Have fun with your Hornet node!
 
 
 ############################################################################################################################################################
@@ -15,7 +15,7 @@ user=iota                   # You can specify a own username for the hornet node
 profile=1gb                 # Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb)
 
 # If you cannot occupy one of the remaining slots, please leave the default values.
-neighbor1=neighbor1:15600   
+neighbor1=neighbor1:15600
 neighbor2=neighbor2:15600
 neighbor3=neighbor3:15600
 neighbor4=neighbor4:15600
