@@ -11,6 +11,22 @@ TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 clear
 
+chkcurl="$(sudo dpkg-query -l | grep curl | wc -l)"
+if [ "$chkcurl" -ne "1" ]; then
+    sudo apt install curl -y > /dev/null
+fi
+
+latestversion="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
+currentversion=0.0.1
+if [ "$currentversion" != "$latestversion" ]; then
+    echo -e $TEXT_RED_B && echo "New version available! Downloading new version..." && echo -e $TEXT_RESET
+    sudo wget -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh > /dev/null
+    sudo chmod +x hornet-installer.sh
+    sudo find hornet-installer.sh -type f -exec sed -i 's/'$currentversion'/'$latestversion'/g' {} \;
+    echo -e $TEXT_YELLOW && echo "Please re-run the installer!" && echo -e $TEXT_RESET
+    exit 0
+fi
+
 if [ ! -f "config.sh" ]; then
     echo -e $TEXT_YELLOW && echo "First run detected...Downloading config file!" && echo -e $TEXT_RESET
     sudo wget -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
