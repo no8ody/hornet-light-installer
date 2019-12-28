@@ -29,7 +29,9 @@ if [ "$currentversion" != "$latestversion" ]; then
     echo -e $TEXT_RESET
     if [ "$resetconf" = "y" ] || [ "$resetconf" = "Y" ]; then
         echo -e $TEXT_YELLOW && echo "Downloading latest installer configuration..." && echo -e $TEXT_RESET
+        sudo mv config.sh config.sh.bak
         sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+        sudo nano config.sh
     fi
     echo -e $TEXT_RED_B && echo "Please re-run the installer!" && echo -e $TEXT_RESET
     exit 0
