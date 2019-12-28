@@ -12,7 +12,7 @@
 
 os=ARM                      # ARM = Raspberry PI3+/4 (32bit) | x86_64 = VPS/Root (64bit)
 user=iota                   # You can specify a own username for the hornet node
-profile=1gb                 # Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb)
+profile=auto                 # Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb) or default = auto
 
 # If you cannot occupy one of the remaining slots, please leave the default values.
 neighbor1=neighbor1.domain.tld:15600
