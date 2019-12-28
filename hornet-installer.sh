@@ -142,14 +142,14 @@ fi
 if [ "$selector" = "3" ]; then
     sudo systemctl stop hornet
     sudo rm -r /home/$user/hornet/mainnetdb/*
-    echo -e $TEXT_YELLOW && read -p "Re-download the latest snapshot (y/N): " snapdb
+    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest snapshot (y/N): " snapdb
     echo -e $TEXT_RESET
     if [ "$snapdb" = "y" ] || [ "$snapdb" = "Y" ]; then
         echo -e $TEXT_YELLOW && echo "Downloading snapshot file..." && echo -e $TEXT_RESET
         sudo rm /home/$user/hornet/latest-export.gz.bin
         sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
     fi
-    sudo systemctl start hornet
+    sudo systemctl restart hornet
     echo -e $TEXT_RED_B && echo "Reset of the database finished, bye!" && echo -e $TEXT_RESET
     exit 0
 fi
