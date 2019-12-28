@@ -125,7 +125,7 @@ if [ "$selector" = "2" ]; then
     sudo systemctl daemon-reload
     sudo systemctl enable hornet.service
     echo -e $TEXT_YELLOW && echo "Starting hornet node! (Please note that this may take some time)" && echo -e $TEXT_RESET
-    sudo systemctl start hornet
+    sudo systemctl restart hornet
     sudo systemctl status hornet
 
     echo -e $TEXT_RED_B && echo "Finish up hornet installation...done. Bye bye!" && echo -e $TEXT_RESET
