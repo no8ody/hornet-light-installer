@@ -26,7 +26,7 @@
 **Before you can run the installation of the reverse proxy it is necessary that you have defined your domain in script before.**
 **Also you need to open following ports in your router configuration: `80/TCP` (Letsencrypt-Auth)**
 
-1. `sudo nano hornet-installer.sh` and set your domain
+1. `sudo nano config.sh` and set your domain
 2. `sudo ./hornet-installer.sh` and run the script
 3. Choose the 4. option
 4. Enter your e-mail address for notifications from LetsEncrypt
