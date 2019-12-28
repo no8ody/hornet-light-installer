@@ -210,6 +210,7 @@ fi
 
 if [ "$selector" = "7" ]; then
 	curl -X DELETE https://community.tanglebay.org/nodes/$password |jq
+    exit 0
 fi
 
 if [ "$selector" = "8" ]; then
