@@ -1,35 +1,6 @@
 #!/bin/bash
 
 ############################################################################################################################################################
-# CONFIG FOR THE HORNET INSTALLER
-############################################################################################################################################################
-
-os=ARM                  # ARM = Raspberry PI3+/4 (32bit) | x86_64 = VPS/Root (64bit)
-user=iota               # You can specify a own username for the hornet node
-
-############################################################################################################################################################
-# CONFIG FOR THE PROXY INSTALLER
-############################################################################################################################################################
-
-domain=my.domain.tld   # Set your domain or your ddns name
-trinityport=14266      # Set your prefered Trinity port (this port must be exposed in your router if you want to reach it from outside)
-dashport=14267         # Set your prefered dashboard port (this port must be exposed in your router if you want to reach it from outside)
-
-
-############################################################################################################################################################
-# CONFIG FOR THE TANGLE BAY INSTALLER
-############################################################################################################################################################
-
-name="My Awesome Hornet Node"   # Set your prefered shown node name
-pow=true                        # Set if your node should do proof of work in the pool
-password=""                     # Set your password after adding your node so you can remove it later
-
-
-
-
-
-
-############################################################################################################################################################
 ############################################################################################################################################################
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
@@ -40,6 +11,14 @@ TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 clear
 
+if [ ! -f "config.sh" ]; then
+    echo -e $TEXT_YELLOW && echo "First run detected...Downloading config file!" && echo -e $TEXT_RESET
+    sudo wget -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    sudo nano config.sh
+    exit 0
+fi
+
+source config.sh
 echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer!" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && echo "Please choose what you want to do:" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW
