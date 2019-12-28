@@ -15,11 +15,11 @@ user=iota                   # You can specify a own username for the hornet node
 profile=1gb                 # Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb)
 
 # If you cannot occupy one of the remaining slots, please leave the default values.
-neighbor1=neighbor1:15600
-neighbor2=neighbor2:15600
-neighbor3=neighbor3:15600
-neighbor4=neighbor4:15600
-neighbor5=neighbor5:15600
+neighbor1=neighbor1.domain.tld:15600
+neighbor2=neighbor2.domain.tld:15600
+neighbor3=neighbor3.domain.tld:15600
+neighbor4=neighbor4.domain.tld:15600
+neighbor5=neighbor5.domain.tld:15600
 
 
 ############################################################################################################################################################

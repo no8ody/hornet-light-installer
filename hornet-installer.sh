@@ -43,10 +43,11 @@ echo -e $TEXT_YELLOW
 echo "1) Update the hornet node"
 echo "2) Install the hornet node"
 echo "3) Reset Database"
-echo "4) Install the reverse proxy"
-echo "5) Add your node to Tangle Bay"
-echo "6) Remove your node from Tangle Bay"
-echo "7) Exit"
+echo "4) Reset Hornet configuration"
+echo "5) Install the reverse proxy"
+echo "6) Add your node to Tangle Bay"
+echo "7) Remove your node from Tangle Bay"
+echo "8) Exit"
 echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && read -p "Please type in the number: " selector
 echo -e $TEXT_RESET
@@ -67,7 +68,7 @@ if [ "$selector" = "1" ] ; then
 	sudo chmod 770 /home/$user/hornet/hornet
 	echo -e $TEXT_YELLOW && echo "Starting hornet node...(Please note that this may take some time)" && echo -e $TEXT_RESET
 	sudo systemctl start hornet
-	echo -e $TEXT_RED_B && echo "Update finished...Bye!" && echo -e $TEXT_RESET
+	echo -e $TEXT_RED_B && echo "Hornet update finished, bye!" && echo -e $TEXT_RESET
 	exit 0
 fi
 
@@ -128,7 +129,7 @@ if [ "$selector" = "2" ]; then
     sudo systemctl restart hornet
     sudo systemctl status hornet
 
-    echo -e $TEXT_RED_B && echo "Finish up hornet installation...done. Bye bye!" && echo -e $TEXT_RESET
+    echo -e $TEXT_RED_B && echo "Hornet installation finished, bye!" && echo -e $TEXT_RESET
     exit 0
 fi
 
@@ -148,6 +149,22 @@ if [ "$selector" = "3" ]; then
 fi
 
 if [ "$selector" = "4" ]; then
+    echo -e $TEXT_YELLOW && echo "Resetting current hornet configuration..." && echo -e $TEXT_RESET
+    sudo -u $user wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/hornet.conf
+    echo -e $TEXT_YELLOW && echo "Setting configuration parameters..." && echo -e $TEXT_RESET
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"light"/'\"$profile\"'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor1.domain.tld:15600/'$neighbor1'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor2.domain.tld:15600/'$neighbor2'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor3.domain.tld:15600/'$neighbor3'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor4.domain.tld:15600/'$neighbor4'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor5.domain.tld:15600/'$neighbor5'/g' {} \;
+    echo -e $TEXT_YELLOW && echo "Restarting hornet node with new configuration..." && echo -e $TEXT_RESET
+    sudo systemctl restart hornet
+    echo -e $TEXT_RED_B && echo "Configuration reset finished, bye!" && echo -e $TEXT_RESET
+    exit 0
+fi
+
+if [ "$selector" = "5" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
     sudo apt install software-properties-common curl jq -y
     sudo add-apt-repository ppa:certbot/certbot -y
@@ -175,21 +192,21 @@ if [ "$selector" = "4" ]; then
     sed -i "82i $sslcertkeypath" /etc/nginx/sites-available/default
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/domain.tld/'$domain'/g' {} \;
     sudo systemctl restart nginx
-    echo -e $TEXT_RED_B && echo "Reverse proxy installation finished... Bye!" && echo -e $TEXT_RESET
+    echo -e $TEXT_RED_B && echo "Reverse proxy installation finished, bye!" && echo -e $TEXT_RESET
     exit 0
 fi
 
-if [ "$selector" = "5" ]; then
+if [ "$selector" = "6" ]; then
     domain2=https://$domain:$trinityport
     curl -X POST "https://community.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"pow\": \"$pow\" }" |jq
     exit 0
 fi
 
-if [ "$selector" = "6" ]; then
+if [ "$selector" = "7" ]; then
 	curl -X DELETE https://community.tanglebay.org/nodes/$password |jq
 fi
 
-if [ "$selector" = "7" ]; then
+if [ "$selector" = "8" ]; then
     exit 0
 fi
 exit 0
