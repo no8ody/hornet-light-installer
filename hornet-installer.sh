@@ -11,9 +11,9 @@ TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 clear
 
-chkcurl="$(sudo dpkg-query -l | grep curl | wc -l)"
-if [ "$chkcurl" -ne "1" ]; then
+if ! [ -x "$(command -v curl)" ]; then
     sudo apt install curl -y > /dev/null
+    clear
 fi
 
 latestversion="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
@@ -72,7 +72,7 @@ fi
 
 if [ "$selector" = "2" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
-    sudo apt install nano curl jq -y
+    sudo apt install nano jq -y
     version="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
     version="${version:1}"
 
