@@ -28,7 +28,7 @@
 
 1. `sudo nano hornet-installer.sh` and set your domain
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the 3. option
+3. Choose the 4. option
 4. Enter your e-mail address for notifications from LetsEncrypt
 5. Agree the terms with `A`
 6. Choose `N` next
@@ -45,13 +45,13 @@
 **To add your node to the pool please follow these steps:**
 1. `sudo nano hornet-installer.sh` and set your node name and pow option
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the 4. option
+3. Choose the 5. option
 4. You get now a password! Please copy the password and save it.
 5. You're done, welcome to the pool party!
 
 **To remove your node from the pool please follow these steps:**
-1. `sudo nano hornet-installer.sh` and set your password
+1. `sudo nano config.sh` and set your password
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the 5. option
+3. Choose the 6. option
 4. If your node details shows up, your node was successfully removed.
 5. Thank you very much for your participation in the pool!
