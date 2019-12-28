@@ -19,19 +19,24 @@ fi
 echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer!" && echo -e $TEXT_RESET
 
 latestversion="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
-currentversion=0.0.1
+currentversion=0.0.2
 if [ "$currentversion" != "$latestversion" ]; then
     echo -e $TEXT_RED_B && echo "New version available! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
     sudo find hornet-installer.sh -type f -exec sed -i 's/'$currentversion'/'$latestversion'/g' {} \;
-    echo -e $TEXT_YELLOW && echo "Please re-run the installer!" && echo -e $TEXT_RESET
+    echo -e $TEXT_YELLOW && read -p "Do you want to reset installer config (y/N): " resetconf
+    echo -e $TEXT_RESET
+    if [ "$resetconf" = "y" ] || [ "$resetconf" = "Y" ]; then
+        echo -e $TEXT_YELLOW && echo "Downloading latest installer configuration..." && echo -e $TEXT_RESET
+        sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    echo -e $TEXT_RED_B && echo "Please re-run the installer!" && echo -e $TEXT_RESET
     exit 0
 fi
 
 if [ ! -f "config.sh" ]; then
     echo -e $TEXT_YELLOW && echo "First run detected...Downloading config file!" && echo -e $TEXT_RESET
-    sudo wget -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     sudo nano config.sh
     echo -e $TEXT_RED_B && echo "Please re-run the hornet-installer!" && echo -e $TEXT_RESET
     exit 0
