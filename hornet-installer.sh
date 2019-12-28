@@ -28,8 +28,9 @@ if [ "$currentversion" != "$latestversion" ]; then
     echo -e $TEXT_YELLOW && read -p "Do you want to reset installer config (y/N): " resetconf
     echo -e $TEXT_RESET
     if [ "$resetconf" = "y" ] || [ "$resetconf" = "Y" ]; then
-        echo -e $TEXT_YELLOW && echo "Downloading latest installer configuration..." && echo -e $TEXT_RESET
+        echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
         sudo mv config.sh config.sh.bak
+        echo -e $TEXT_YELLOW && echo "Downloading latest installer configuration..." && echo -e $TEXT_RESET
         sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
         sudo nano config.sh
     fi
