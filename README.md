@@ -5,10 +5,12 @@
 
 **Download the latest release version of the script and run it. Do the following steps:**
 
-1. `sudo wget -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh`
-2. `sudo chmod +x install-hornet.sh`
-3. Edit your preferences in the config section: `sudo nano hornet-installer.sh` 
-4. Run the installer: `sudo ./hornet-installer.sh`
+1. First you should create a folder for the script and config `mkdir hornet-installer && cd hornet-installer`
+2. `sudo wget -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh`
+3. `sudo chmod +x install-hornet.sh`
+5. Run the installer: `sudo ./hornet-installer.sh`
+6. With the first start no config is detected and it will downloaded automatically and opened to edit.
+7. Re-run the installer again after editing the config.sh file `sudo ./hornet-installer.sh`
 
 **After your node is running you need to add some neighbors in the config.json file**
 
@@ -17,7 +19,6 @@
 **After you have added some neighbors just restart the node to get sync**
 
 `sudo systemctl restart hornet`
-
 
 
 # Install reverse proxy #
