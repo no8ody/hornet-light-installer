@@ -100,8 +100,8 @@ if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
     sudo wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
     sudo wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/hornet.conf
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"auto"/'\"$profile\"'/g' {} \;
-    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/3NnxP8ajMp/'$dashuser'/g' {} \;
-    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/AiU9N49WBL/'$dashpw'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"3NnxP8ajMp"/'\"$dashuser\"'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"AiU9N49WBL"/'\"$dashpw\"'/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor1:15600/'$neighbor1'/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor2:15600/'$neighbor2'/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/neighbor3:15600/'$neighbor3'/g' {} \;
@@ -190,9 +190,11 @@ if [ "$selector" = "1" ] ; then
     echo -e $TEXT_RESET
     if [ "$selector" = "r" ] || [ "$selector" = "R" ]; then
         sudo systemctl restart hornet
+        echo -e $TEXT_RED_B && echo "Hornet node restarted...!" && echo -e $TEXT_RESET
     fi
     if [ "$selector" = "s" ] || [ "$selector" = "S" ]; then
         sudo systemctl stop hornet
+        echo -e $TEXT_RED_B && echo "Hornet node stopped...!" && echo -e $TEXT_RESET
     fi
     exit 0
 fi
