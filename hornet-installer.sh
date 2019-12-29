@@ -30,7 +30,6 @@ if [ "$currenthli" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
-    sudo find hornet-installer.sh -type f -exec sed -i 's/'$currenthli'/'$latesthli'/g' {} \;
     echo -e $TEXT_YELLOW && read -p "Do you want to reset installer config (y/N): " resetconf
     echo -e $TEXT_RESET
     if [ "$resetconf" = "y" ] || [ "$resetconf" = "Y" ]; then
