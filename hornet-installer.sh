@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-currenthli=0.0.3
+currenthli=0.0.4
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -200,6 +200,7 @@ if [ "$selector" = "5" ]; then
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/domain.tld/'$domain'/g' {} \;
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/14266/'$trinityport'/g' {} \;
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/14267/'$dashport'/g' {} \;
+    sudo find /etc/nginx/nginx.conf -type f -exec sed -i 's/\# server_names_hash_bucket_size 64;/server_names_hash_bucket_size 64;/g' {} \;
     sudo systemctl restart nginx
 
     echo -e $TEXT_YELLOW && echo "Starting SSL-Certificate installation..." && echo -e $TEXT_RESET
