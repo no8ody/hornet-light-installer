@@ -50,7 +50,7 @@ if [ ! -f "config.sh" ]; then
     echo -e $TEXT_RED_B && echo "Please re-run the hornet-installer!" && echo -e $TEXT_RESET
     exit 0
 fi
-
+source config.sh
 nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
@@ -60,8 +60,6 @@ echo Current Hornet: $nodev
 echo Latest Hornet: \"$latesthornet\"
 echo -e $TEXT_RESET
 
-source config.sh
-echo -e $TEXT_YELLOW && echo "Please choose what you want to do:" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW
 echo "Installer Management"
 echo ""
