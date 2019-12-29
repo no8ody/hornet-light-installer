@@ -190,7 +190,7 @@ fi
 if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then  
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
-    echo -e $TEXT_YELLOW && echo "Downloading latest HLI-Script (v$latesthli) completed!" && echo -e $TEXT_RESET
+    echo -e $TEXT_RED_B && echo "Downloading latest HLI-Script (v$latesthli) completed!" && echo -e $TEXT_RESET
     exit 0
 fi
 
@@ -198,7 +198,7 @@ if [ "$selector" = "f" ] || [ "$selector" = "F" ]; then
     echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
-    echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
+    echo -e $TEXT_RED_B && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
     exit 0
 fi
 
