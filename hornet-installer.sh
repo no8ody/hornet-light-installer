@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-currenthli=0.0.6
+currenthli=0.0.7
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -23,11 +23,11 @@ if ! [ -x "$(command -v jq)" ]; then
     clear
 fi
 
-echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer!" && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer (v$currenthli)!" && echo -e $TEXT_RESET
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 
 if [ "$currenthli" != "$latesthli" ]; then
-    echo -e $TEXT_RED_B && echo "New version available! Downloading new version..." && echo -e $TEXT_RESET
+    echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
     echo -e $TEXT_YELLOW && read -p "Do you want to reset installer config (y/N): " resetconf
@@ -67,6 +67,8 @@ echo "a) Install the hornet node"
 echo "b) Install the reverse proxy"
 echo "c) Add your node to Tangle Bay"
 echo "d) Remove your node from Tangle Bay"
+echo "e) Download latest installer script"
+echo "f) Download latest installer config"
 echo ""
 echo ""
 echo "Node Management"
@@ -77,7 +79,7 @@ echo "3) Update the hornet node"
 echo "4) Reset node database"
 echo "5) Reset/Reload Hornet config"
 echo ""
-echo "e) Exit"
+echo "x) Exit"
 echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
 echo -e $TEXT_RESET
@@ -185,6 +187,21 @@ if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
     exit 0
 fi
 
+if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then  
+    sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
+    sudo chmod +x hornet-installer.sh
+    echo -e $TEXT_YELLOW && echo "Downloading latest HLI-Script (v$latesthli) completed!" && echo -e $TEXT_RESET
+    exit 0
+fi
+
+if [ "$selector" = "F" ] || [ "$selector" = "F" ]; then
+    echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
+    sudo mv config.sh config.sh.bak
+    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
+    exit 0
+fi
+
 if [ "$selector" = "1" ] ; then
     echo -e $TEXT_YELLOW && read -p "What would you like to (r)estart or (s)top the node: " startstop
     echo -e $TEXT_RESET
@@ -254,7 +271,7 @@ if [ "$selector" = "5" ]; then
     exit 0
 fi
 
-if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
+if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
     exit 0
 fi
 exit 0
