@@ -12,17 +12,19 @@ TEXT_RED_B='\e[1;31m'
 clear
 
 if ! [ -x "$(command -v curl)" ]; then
+    echo -e $TEXT_YELLOW && echo "Installing necessary packages curl..." && echo -e $TEXT_RESET
     sudo apt install curl -y > /dev/null
     clear
 fi
 if ! [ -x "$(command -v jq)" ]; then
+    echo -e $TEXT_YELLOW && echo "Installing necessary package jq..." && echo -e $TEXT_RESET
     sudo apt install jq -y > /dev/null
     clear
 fi
 
 echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer!" && echo -e $TEXT_RESET
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
-currenthli=0.0.2
+currenthli=0.0.3
 
 if [ "$currenthli" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available! Downloading new version..." && echo -e $TEXT_RESET
