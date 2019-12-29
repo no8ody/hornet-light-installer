@@ -194,7 +194,7 @@ if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
     exit 0
 fi
 
-if [ "$selector" = "F" ] || [ "$selector" = "F" ]; then
+if [ "$selector" = "f" ] || [ "$selector" = "F" ]; then
     echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
