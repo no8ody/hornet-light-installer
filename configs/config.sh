@@ -17,7 +17,11 @@ os=ARM
 user=iota
 
 # Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb) or default = auto
-profile=auto
+profile=1gb
+
+# For the Dashboard access please define a username and a password below
+dashuser=hornella
+dashpw=hornatella
 
 # If you cannot occupy one of the remaining slots, please leave the default values. You shouldn't have more than 5 neighbors.
 neighbor1=neighbor1.domain.tld:15600
