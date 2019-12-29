@@ -207,9 +207,8 @@ if [ "$selector" = "5" ]; then
 
     sslcertpath="ssl_certificate /etc/letsencrypt/live/$domain/fullchain.pem;"
     sslcertkeypath="ssl_certificate_key /etc/letsencrypt/live/$domain/privkey.pem;"
-    sed -i "81i $sslcertpath" /etc/nginx/sites-available/default
-    sed -i "82i $sslcertkeypath" /etc/nginx/sites-available/default
-    sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/domain.tld/'$domain'/g' {} \;
+    sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/\#RjtV27dwngc8fJJ5ErELAkHKT;/'$sslcertpath'/g' {} \;
+    sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/\#jdnkESJD7yRkW6RSxD3Uy53VW;/'$sslcertkeypath'/g' {} \;
     sudo systemctl restart nginx
     echo -e $TEXT_RED_B && echo "Reverse proxy installation finished, bye!" && echo -e $TEXT_RESET
     exit 0
