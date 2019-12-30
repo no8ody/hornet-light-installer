@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.0.8
+version=0.0.9
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -110,9 +110,9 @@ if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
     sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
     sudo -u $user wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/gohornet/hornet/master/config.json
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"auto"/'\"$profile\"'/g' {} \;
-    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"enabled": false/\"enabled\"\: $dashauth/g' {} \;
-    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"username": "hornet"/\"username\"\: \"$dashuser\/g' {} \;
-    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"password": "hornet"/\"password\"\: \"$dashpw\"/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"enabled": false/\"enabled\"\: '$dashauth'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"username": "hornet"/\"username\"\: \"'$dashuser'\"/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"password": "hornet"/\"password\"\: \"'$dashpw'\"/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/example1.neighbor.com:15600/'$neighbor1'/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/example2.neighbor.com:15600/'$neighbor2'/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/example3.neighbor.com:15600/'$neighbor3'/g' {} \;
@@ -277,9 +277,9 @@ if [ "$selector" = "6" ]; then
     sudo -u $user wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/gohornet/hornet/master/config.json
     echo -e $TEXT_YELLOW && echo "Setting configuration parameters..." && echo -e $TEXT_RESET
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"auto"/'\"$profile\"'/g' {} \;
-    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"enabled": false/\"enabled\"\: $dashauth/g' {} \;
-    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"username": "hornet"/\"username\"\: \"$dashuser\/g' {} \;
-    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"password": "hornet"/\"password\"\: \"$dashpw\"/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"enabled": false/\"enabled\"\: '$dashauth'/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"username": "hornet"/\"username\"\: \"'$dashuser'\"/g' {} \;
+    sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"password": "hornet"/\"password\"\: \"'$dashpw'\"/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/example1.neighbor.com:15600/'$neighbor1'/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/example2.neighbor.com:15600/'$neighbor2'/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/example3.neighbor.com:15600/'$neighbor3'/g' {} \;
@@ -294,4 +294,5 @@ if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
     let counter=counter+1
 fi
 done
+clear
 exit 0

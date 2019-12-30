@@ -23,8 +23,8 @@ profile=1gb
 dashauth=false
 
 # For the Dashboard access please define a username and a password below
-dashuser=hornella
-dashpw=hornatella
+dashuser="hornella"
+dashpw="hornatella"
 
 # If you cannot occupy one of the remaining slots, please leave the default values. You shouldn't have more than 5 neighbors.
 # Please replace the defined neighbors below as soon as possible
