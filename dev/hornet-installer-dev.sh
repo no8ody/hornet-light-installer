@@ -224,7 +224,7 @@ if [ "$selector" = "1" ] ; then
 fi
 
 if [ "$selector" = "2" ] ; then
-    sudo journalctl -fu hornet
+    sudo journalctl -fu hornet | less -FRSXM
 fi
 
 if [ "$selector" = "3" ] ; then
