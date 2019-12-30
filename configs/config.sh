@@ -19,16 +19,18 @@ user=iota
 # Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb) or default = auto
 profile=1gb
 
+# Define if a username and password is required for the dashboard
+dashauth=false
+
 # For the Dashboard access please define a username and a password below
 dashuser=hornella
 dashpw=hornatella
 
 # If you cannot occupy one of the remaining slots, please leave the default values. You shouldn't have more than 5 neighbors.
-neighbor1=neighbor1.domain.tld:15600
-neighbor2=neighbor2.domain.tld:15600
-neighbor3=neighbor3.domain.tld:15600
-neighbor4=neighbor4.domain.tld:15600
-neighbor5=neighbor5.domain.tld:15600
+# Please replace the defined neighbors below as soon as possible
+neighbor1=auto01.manapotion.io:15601
+neighbor2=auto02.manapotion.io:15602
+neighbor3=node01.iotatoken.nl:14700
 
 
 ############################################################################################################################################################
@@ -36,7 +38,7 @@ neighbor5=neighbor5.domain.tld:15600
 ############################################################################################################################################################
 
 # Set your domain or your ddns name
-domain=my.domain.tld
+domain=myhornetnode.ddns.net
 
 # Set your prefered Trinity port (this port must be exposed in your router if you want to reach it from outside)
 trinityport=14266
