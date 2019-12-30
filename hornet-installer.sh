@@ -251,7 +251,7 @@ if [ "$selector" = "4" ] ; then
 	sudo chmod 770 /home/$user/hornet/hornet
 	echo -e $TEXT_YELLOW && echo "Starting hornet node...(Please note that this may take some time)" && echo -e $TEXT_RESET
 	sudo systemctl start hornet
-	echo -e $TEXT_YELLOW && echo "Hornet update finished!" && echo -e $TEXT_RESET
+	echo -e $TEXT_YELLOW && echo "Hornet update finished and started!" && echo -e $TEXT_RESET
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
@@ -267,7 +267,7 @@ if [ "$selector" = "5" ]; then
         sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
     fi
     sudo systemctl restart hornet
-    echo -e $TEXT_YELLOW && echo "Reset of the database finished!" && echo -e $TEXT_RESET
+    echo -e $TEXT_YELLOW && echo "Reset of the database finished and hornet restarted!" && echo -e $TEXT_RESET
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
