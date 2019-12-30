@@ -294,4 +294,5 @@ if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
     let counter=counter+1
 fi
 done
+clear
 exit 0
