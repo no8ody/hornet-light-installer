@@ -161,8 +161,8 @@ if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
     sudo apt update && sudo apt dist-upgrade -y && sudo apt upgrade -y && apt autoremove -y
 
     echo -e $TEXT_YELLOW && echo "Updating Nginx..." && echo -e $TEXT_RESET
-    sudo mkdir /etc/systemd/system/nginx.service.d &&
-    sudo printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > /etc/systemd/system/nginx.service.d/override.conf &&
+    sudo mkdir /etc/systemd/system/nginx.service.d
+    sudo printf "[Service]\nExecStartPost=/bin/sleep 0.1\n" > /etc/systemd/system/nginx.service.d/override.conf
     sudo systemctl daemon-reload
 
     echo -e $TEXT_YELLOW && echo "Downloading Nginx configuration..." && echo -e $TEXT_RESET
@@ -207,15 +207,15 @@ if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
 fi
 
 if [ "$selector" = "1" ] ; then
-    echo -e $TEXT_YELLOW && read -p "What would you like to (r)estart or (s)top the node: " startstop
+    echo -e $TEXT_YELLOW && read -p "What would you like to (r)estart or (s)top the node: " selector1
     echo -e $TEXT_RESET
-    if [ "$startstop" = "r" ] || [ "$startstop" = "R" ]; then
+    if [ "$selector1" = "r" ] || [ "$selector1" = "R" ]; then
         sudo systemctl restart hornet
         echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
         echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
         echo -e $TEXT_RESET
     fi
-    if [ "$startstop" = "s" ] || [ "$startstop" = "S" ]; then
+    if [ "$selector1" = "s" ] || [ "$selector1" = "S" ]; then
         sudo systemctl stop hornet
         echo -e $TEXT_YELLOW && echo "Hornet node stopped!" && echo -e $TEXT_RESET
         echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
@@ -229,8 +229,8 @@ fi
 
 if [ "$selector" = "3" ] ; then
     sudo nano /home/$user/hornet/config.json
-    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " hrestart
-    if [ "$hrestart" = "y" ] || [ "$hrestart" = "y" ]; then
+    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " selector3
+    if [ "$selector3" = "y" ] || [ "$selector3" = "y" ]; then
         sudo systemctl restart hornet
         echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
         echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
@@ -259,9 +259,9 @@ fi
 if [ "$selector" = "5" ]; then
     sudo systemctl stop hornet
     sudo rm -r /home/$user/hornet/mainnetdb/*
-    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest snapshot (y/N): " snapdb
+    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest snapshot (y/N): " selector5
     echo -e $TEXT_RESET
-    if [ "$snapdb" = "y" ] || [ "$snapdb" = "Y" ]; then
+    if [ "$selector5" = "y" ] || [ "$selector5" = "Y" ]; then
         echo -e $TEXT_YELLOW && echo "Downloading snapshot file..." && echo -e $TEXT_RESET
         sudo rm /home/$user/hornet/latest-export.gz.bin
         sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
