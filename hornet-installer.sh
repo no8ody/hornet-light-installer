@@ -188,8 +188,7 @@ if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
     sudo nano config.sh
-    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
+    selector=6
 fi
 
 if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
@@ -253,11 +252,7 @@ if [ "$selector" = "4" ] ; then
 	sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
 	sudo chown $user:$user /home/$user/hornet/hornet
 	sudo chmod 770 /home/$user/hornet/hornet
-	echo -e $TEXT_YELLOW && echo "Starting hornet node...(Please note that this may take some time)" && echo -e $TEXT_RESET
-	sudo systemctl start hornet
-	echo -e $TEXT_YELLOW && echo "Hornet update finished and started!" && echo -e $TEXT_RESET
-    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
+    selector=6
 fi
 
 if [ "$selector" = "5" ]; then
@@ -277,6 +272,8 @@ if [ "$selector" = "5" ]; then
 fi
 
 if [ "$selector" = "6" ]; then
+    echo -e $TEXT_YELLOW && echo "Backup current config.json..." && echo -e $TEXT_RESET
+    sudo -u $user mv /home/$user/hornet/config.json /home/$user/hornet/config.json.bak
     echo -e $TEXT_YELLOW && echo "Resetting current hornet configuration..." && echo -e $TEXT_RESET
     sudo -u $user wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/gohornet/hornet/master/config.json
     echo -e $TEXT_YELLOW && echo "Setting configuration parameters..." && echo -e $TEXT_RESET
