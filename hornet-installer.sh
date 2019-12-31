@@ -182,13 +182,14 @@ if [ "$selector" = "c" ] || [ "$selector" = "E" ]; then
 fi
 
 if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
-    echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
+    echo -e $TEXT_YELLOW && echo "Creating backup of the HLI config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
-    echo -e $TEXT_YELLOW && echo "Finished! You can find the backup config in the folder." && echo -e $TEXT_RESET
+    echo -e $TEXT_YELLOW && echo "Finished! You can find the HLI backup config in the folder." && echo -e $TEXT_RESET
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
     sudo nano config.sh
-    selector=6
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
 fi
 
 if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
@@ -272,6 +273,16 @@ if [ "$selector" = "5" ]; then
 fi
 
 if [ "$selector" = "6" ]; then
+    echo -e $TEXT_YELLOW && read -p "Would you like to download the HLI config (y/N): " selector6
+    echo -e $TEXT_RESET
+    if [ "$selector6" = "y" ] || [ "$selector6" = "y" ]; then
+        echo -e $TEXT_YELLOW && echo "Creating backup of the HLI config file..." && echo -e $TEXT_RESET
+        sudo mv config.sh config.sh.bak
+        echo -e $TEXT_YELLOW && echo "Finished! You can find the HLI backup config in the folder." && echo -e $TEXT_RESET
+        sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+        echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
+        sudo nano config.sh
+    fi
     echo -e $TEXT_YELLOW && echo "Backup current config.json..." && echo -e $TEXT_RESET
     sudo -u $user mv /home/$user/hornet/config.json /home/$user/hornet/config.json.bak
     echo -e $TEXT_YELLOW && echo "Resetting current hornet configuration..." && echo -e $TEXT_RESET
