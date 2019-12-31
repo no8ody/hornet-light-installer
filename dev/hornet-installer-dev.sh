@@ -32,14 +32,7 @@ if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
-    echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
-    sudo mv config.sh config.sh.bak
-    echo -e $TEXT_YELLOW && echo "Finished! You can find the backup config in the folder." && echo -e $TEXT_RESET
-    echo -e $TEXT_YELLOW && echo "Downloading latest HLI config..." && echo -e $TEXT_RESET
-    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
-    sudo nano config.sh
-    echo -e $TEXT_RED_B && pause 'Update completed! Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
+    sleep 2
     ScriptLoc=$(readlink -f "$0")
     exec "$ScriptLoc"
     exit 0
@@ -188,7 +181,7 @@ if [ "$selector" = "c" ] || [ "$selector" = "E" ]; then
     sudo mv config.sh config.sh.bak
     echo -e $TEXT_YELLOW && echo "Finished! You can find the backup config in the folder." && echo -e $TEXT_RESET
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
-    echo -e $TEXT_RED_B && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
+    echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
     sudo nano config.sh
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
@@ -208,17 +201,22 @@ if [ "$selector" = "e" ] || [ "$selector" = "D" ]; then
 fi
 
 if [ "$selector" = "1" ] ; then
-    echo -e $TEXT_YELLOW && read -p "What would you like to (r)estart or (s)top the node: " selector1
+    echo -e $TEXT_YELLOW && read -p "Would you like to (r)estart/(h)stop/(s)tatus or (c)ancel: " selector1
     echo -e $TEXT_RESET
     if [ "$selector1" = "r" ] || [ "$selector1" = "R" ]; then
         sudo systemctl restart hornet
-        echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
+        echo -e $TEXT_YELLOW && echo "Hornet node (re)started!" && echo -e $TEXT_RESET
+        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+        echo -e $TEXT_RESET
+    fi
+    if [ "$selector1" = "h" ] || [ "$selector1" = "H" ]; then
+        sudo systemctl stop hornet
+        echo -e $TEXT_YELLOW && echo "Hornet node stopped!" && echo -e $TEXT_RESET
         echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
         echo -e $TEXT_RESET
     fi
     if [ "$selector1" = "s" ] || [ "$selector1" = "S" ]; then
-        sudo systemctl stop hornet
-        echo -e $TEXT_YELLOW && echo "Hornet node stopped!" && echo -e $TEXT_RESET
+        sudo systemctl status hornet
         echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
         echo -e $TEXT_RESET
     fi
