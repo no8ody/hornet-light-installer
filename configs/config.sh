@@ -10,13 +10,13 @@
 # CONFIG FOR THE HORNET INSTALLER
 ############################################################################################################################################################
 
-# ARM = Raspberry PI3+/4 (32bit) | x86_64 = VPS/Root (64bit)
+# ARM = Raspberry PI3+/4 (DietPi 32bit) | ARM64 = Raspberry4 4GB (Ubuntu 64bit) | x86_64 = VPS/Root (64bit)
 os=ARM
 
 # You can specify a own username for the hornet node
 user=iota
 
-# Please set your profile in RAM-GB (PI3B+/4=1gb, PI4=2gb, 4gb, 8gb) or default = auto
+# Please set your profile in RAM-GB (PI3B+/4(x86)=1gb, PI4(Ubuntu64)=2gb or default = auto
 profile=1gb
 
 # Define if a username and password is required for the dashboard

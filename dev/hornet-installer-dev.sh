@@ -11,7 +11,6 @@ TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 clear
-source config.sh
 
 function pause(){
    read -p "$*"
@@ -67,7 +66,7 @@ nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/js
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
 
-echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer (HLI)! [v$version]" && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
 echo -e $TEXT_RED_B
 echo Current Hornet: $nodev
 echo Latest Hornet: \"$latesthornet\"
@@ -78,9 +77,9 @@ echo "Installer Management"
 echo ""
 echo "a) Install the hornet node"
 echo "b) Install the reverse proxy"
-echo "c) Add your node to Tangle Bay"
-echo "d) Remove your node from Tangle Bay"
-echo "e) Download latest HLI config"
+echo "c) Download latest HLI config"
+echo "d) Add your node to Tangle Bay"
+echo "e) Remove your node from Tangle Bay"
 echo ""
 echo ""
 echo "Node Management"
@@ -89,8 +88,8 @@ echo "1) Control hornet (start/stop)"
 echo "2) Show last live log"
 echo "3) Edit Hornet configuration"
 echo "4) Update the hornet node"
-echo "5) Reset node database"
-echo "6) Reset/Reload Hornet config"
+echo "5) Delete mainnet database"
+echo "6) Replace Hornet config.json"
 echo ""
 echo "x) Exit"
 echo -e $TEXT_RESET
@@ -190,26 +189,26 @@ if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "c" ] || [ "$selector" = "C" ]; then
-    domain2=https://$domain:$trinityport
-    curl -X POST "https://community.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"pow\": \"$pow\" }" |jq
-    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
-fi
-
-if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
-	curl -X DELETE https://community.tanglebay.org/nodes/$password |jq
-    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
-fi
-
-if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
+if [ "$selector" = "c" ] || [ "$selector" = "E" ]; then
     echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     echo -e $TEXT_RED_B && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
     sudo nano config.sh
     selector=6
+fi
+
+if [ "$selector" = "d" ] || [ "$selector" = "C" ]; then
+    domain2=https://$domain:$trinityport
+    curl -X POST "https://community.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"pow\": \"$pow\" }" |jq
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+fi
+
+if [ "$selector" = "e" ] || [ "$selector" = "D" ]; then
+	curl -X DELETE https://community.tanglebay.org/nodes/$password |jq
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
 fi
 
 if [ "$selector" = "1" ] ; then
