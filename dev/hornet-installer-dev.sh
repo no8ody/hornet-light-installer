@@ -11,6 +11,11 @@ TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 clear
+source config.sh
+
+function pause(){
+   read -p "$*"
+}
 
 if ! [ -x "$(command -v curl)" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages curl..." && echo -e $TEXT_RESET
@@ -27,7 +32,7 @@ latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-install
 if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     updater=0
-    while [ $updater -lt 1 ]; do  
+    while [ $updater -lt 1 ]; do
         sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
         sudo chmod +x hornet-installer.sh
         sleep 2
@@ -35,16 +40,14 @@ if [ "$version" != "$latesthli" ]; then
             let updater=updater+1
         fi
     done
-    echo -e $TEXT_YELLOW && read -p "Do you want to reset installer config (y/N): " resetconf
+    echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
+    sudo mv config.sh config.sh.bak
+    echo -e $TEXT_YELLOW && echo "Finished! You can find the backup config in the folder." && echo -e $TEXT_RESET
+    echo -e $TEXT_YELLOW && echo "Downloading latest installer configuration..." && echo -e $TEXT_RESET
+    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    sudo nano config.sh
+    echo -e $TEXT_RED_B && pause 'Update completed! Press [Enter] key to continue...'
     echo -e $TEXT_RESET
-    if [ "$resetconf" = "y" ] || [ "$resetconf" = "Y" ]; then
-        echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
-        sudo mv config.sh config.sh.bak
-        echo -e $TEXT_YELLOW && echo "Downloading latest installer configuration..." && echo -e $TEXT_RESET
-        sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
-        sudo nano config.sh
-    fi
-    echo -e $TEXT_RED_B && echo "Please re-run the installer!" && echo -e $TEXT_RESET
     ScriptLoc=$(readlink -f "$0")
     exec "$ScriptLoc"
     exit 0
@@ -58,9 +61,6 @@ fi
 
 counter=0
 while [ $counter -lt 1 ]; do
-function pause(){
-   read -p "$*"
-}
 clear
 source config.sh
 nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
@@ -81,7 +81,6 @@ echo "b) Install the reverse proxy"
 echo "c) Add your node to Tangle Bay"
 echo "d) Remove your node from Tangle Bay"
 echo "e) Download latest HLI config"
-echo "f) Edit HLI config"
 echo ""
 echo ""
 echo "Node Management"
