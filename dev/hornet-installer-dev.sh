@@ -23,20 +23,18 @@ if ! [ -x "$(command -v jq)" ]; then
     clear
 fi
 
-counter=0
-while [ $counter -lt 1 ]; do
-function pause(){
-   read -p "$*"
-}
-clear
-
-echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer! (v$version)" && echo -e $TEXT_RESET
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
-
 if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
-    sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
-    sudo chmod +x hornet-installer.sh
+    updater=0
+    while [ $updater -lt 1 ]; do  
+        sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
+        sudo chmod +x hornet-installer.sh
+        sleep 2
+        if [ "$version" != "$latesthli" ]; then
+            let updater=updater+1
+        fi
+    done
     echo -e $TEXT_YELLOW && read -p "Do you want to reset installer config (y/N): " resetconf
     echo -e $TEXT_RESET
     if [ "$resetconf" = "y" ] || [ "$resetconf" = "Y" ]; then
@@ -47,6 +45,8 @@ if [ "$version" != "$latesthli" ]; then
         sudo nano config.sh
     fi
     echo -e $TEXT_RED_B && echo "Please re-run the installer!" && echo -e $TEXT_RESET
+    ScriptLoc=$(readlink -f "$0")
+    exec "$ScriptLoc"
     exit 0
 fi
 
@@ -54,15 +54,20 @@ if [ ! -f "config.sh" ]; then
     echo -e $TEXT_YELLOW && echo "First run detected...Downloading config file!" && echo -e $TEXT_RESET
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     sudo nano config.sh
-    echo -e $TEXT_RED_B && echo "Please re-run the hornet-installer!" && echo -e $TEXT_RESET
-    exit 0
 fi
 
+counter=0
+while [ $counter -lt 1 ]; do
+function pause(){
+   read -p "$*"
+}
+clear
 source config.sh
 nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
 
+echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer (HLI)! [v$version]" && echo -e $TEXT_RESET
 echo -e $TEXT_RED_B
 echo Current Hornet: $nodev
 echo Latest Hornet: \"$latesthornet\"
@@ -75,13 +80,14 @@ echo "a) Install the hornet node"
 echo "b) Install the reverse proxy"
 echo "c) Add your node to Tangle Bay"
 echo "d) Remove your node from Tangle Bay"
-echo "e) Download latest installer config"
+echo "e) Download latest HLI config"
+echo "f) Edit HLI config"
 echo ""
 echo ""
 echo "Node Management"
 echo ""
 echo "1) Control hornet (start/stop)"
-echo "2) Show live log"
+echo "2) Show last live log"
 echo "3) Edit Hornet configuration"
 echo "4) Update the hornet node"
 echo "5) Reset node database"
@@ -156,7 +162,7 @@ fi
 if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
     sudo apt install software-properties-common curl jq -y
-    sudo add-apt-repository ppa:certbot/certbot -y
+    sudo add-apt-repository ppa:certbot/certbot -y > /dev/null
     sudo apt update && sudo apt install python-certbot-nginx -y
     sudo apt update && sudo apt dist-upgrade -y && sudo apt upgrade -y && apt autoremove -y
 
@@ -204,6 +210,7 @@ if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     echo -e $TEXT_RED_B && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
     sudo nano config.sh
+    selector=6
 fi
 
 if [ "$selector" = "1" ] ; then
