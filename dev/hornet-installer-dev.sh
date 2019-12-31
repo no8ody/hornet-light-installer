@@ -30,19 +30,12 @@ fi
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
-    updater=0
-    while [ $updater -lt 1 ]; do
-        sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
-        sudo chmod +x hornet-installer.sh
-        sleep 2
-        if [ "$version" != "$latesthli" ]; then
-            let updater=updater+1
-        fi
-    done
+    sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
+    sudo chmod +x hornet-installer.sh
     echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
     echo -e $TEXT_YELLOW && echo "Finished! You can find the backup config in the folder." && echo -e $TEXT_RESET
-    echo -e $TEXT_YELLOW && echo "Downloading latest installer configuration..." && echo -e $TEXT_RESET
+    echo -e $TEXT_YELLOW && echo "Downloading latest HLI config..." && echo -e $TEXT_RESET
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     sudo nano config.sh
     echo -e $TEXT_RED_B && pause 'Update completed! Press [Enter] key to continue...'
@@ -95,6 +88,7 @@ echo "x) Exit"
 echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
 echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "==============================================================" && echo -e $TEXT_RESET
 
 if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
@@ -192,10 +186,12 @@ fi
 if [ "$selector" = "c" ] || [ "$selector" = "E" ]; then
     echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
+    echo -e $TEXT_YELLOW && echo "Finished! You can find the backup config in the folder." && echo -e $TEXT_RESET
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     echo -e $TEXT_RED_B && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
     sudo nano config.sh
-    selector=6
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
 fi
 
 if [ "$selector" = "d" ] || [ "$selector" = "C" ]; then
