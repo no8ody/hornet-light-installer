@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.0.9
+version=0.1.0
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -63,9 +63,10 @@ echo "Installer Management"
 echo ""
 echo "a) Install the hornet node"
 echo "b) Install the reverse proxy"
-echo "c) Download latest HLI config"
-echo "d) Add your node to Tangle Bay"
-echo "e) Remove your node from Tangle Bay"
+echo "c) Edit HLI config"
+echo "d) Download latest HLI config"
+echo "e) Add your node to Tangle Bay"
+echo "f) Remove your node from Tangle Bay"
 echo ""
 echo ""
 echo "Node Management"
@@ -81,7 +82,7 @@ echo "x) Exit"
 echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
 echo -e $TEXT_RESET
-echo -e $TEXT_YELLOW && echo "==============================================================" && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "===========================================================" && echo -e $TEXT_RESET
 
 if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
@@ -177,6 +178,10 @@ if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
 fi
 
 if [ "$selector" = "c" ] || [ "$selector" = "E" ]; then
+    sudo nano config.sh
+fi
+
+if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
     echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
     echo -e $TEXT_YELLOW && echo "Finished! You can find the backup config in the folder." && echo -e $TEXT_RESET
@@ -187,14 +192,14 @@ if [ "$selector" = "c" ] || [ "$selector" = "E" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "d" ] || [ "$selector" = "C" ]; then
+if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
     domain2=https://$domain:$trinityport
     curl -X POST "https://community.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"pow\": \"$pow\" }" |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "e" ] || [ "$selector" = "D" ]; then
+if [ "$selector" = "f" ] || [ "$selector" = "F" ]; then
 	curl -X DELETE https://community.tanglebay.org/nodes/$password |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET

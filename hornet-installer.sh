@@ -5,12 +5,16 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.0.9
+version=0.1.0
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
 clear
+
+function pause(){
+   read -p "$*"
+}
 
 if ! [ -x "$(command -v curl)" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages curl..." && echo -e $TEXT_RESET
@@ -23,30 +27,14 @@ if ! [ -x "$(command -v jq)" ]; then
     clear
 fi
 
-counter=0
-while [ $counter -lt 1 ]; do
-function pause(){
-   read -p "$*"
-}
-clear
-
-echo -e $TEXT_YELLOW && echo "Welcome to the Hornet lightweight installer! (v$version)" && echo -e $TEXT_RESET
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
-
 if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
-    echo -e $TEXT_YELLOW && read -p "Do you want to reset installer config (y/N): " resetconf
-    echo -e $TEXT_RESET
-    if [ "$resetconf" = "y" ] || [ "$resetconf" = "Y" ]; then
-        echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
-        sudo mv config.sh config.sh.bak
-        echo -e $TEXT_YELLOW && echo "Downloading latest installer configuration..." && echo -e $TEXT_RESET
-        sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
-        sudo nano config.sh
-    fi
-    echo -e $TEXT_RED_B && echo "Please re-run the installer!" && echo -e $TEXT_RESET
+    sleep 2
+    ScriptLoc=$(readlink -f "$0")
+    exec "$ScriptLoc"
     exit 0
 fi
 
@@ -54,15 +42,17 @@ if [ ! -f "config.sh" ]; then
     echo -e $TEXT_YELLOW && echo "First run detected...Downloading config file!" && echo -e $TEXT_RESET
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     sudo nano config.sh
-    echo -e $TEXT_RED_B && echo "Please re-run the hornet-installer!" && echo -e $TEXT_RESET
-    exit 0
 fi
 
+counter=0
+while [ $counter -lt 1 ]; do
+clear
 source config.sh
 nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
 
+echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
 echo -e $TEXT_RED_B
 echo Current Hornet: $nodev
 echo Latest Hornet: \"$latesthornet\"
@@ -73,24 +63,26 @@ echo "Installer Management"
 echo ""
 echo "a) Install the hornet node"
 echo "b) Install the reverse proxy"
-echo "c) Add your node to Tangle Bay"
-echo "d) Remove your node from Tangle Bay"
-echo "e) Download latest installer config"
+echo "c) Edit HLI config"
+echo "d) Download latest HLI config"
+echo "e) Add your node to Tangle Bay"
+echo "f) Remove your node from Tangle Bay"
 echo ""
 echo ""
 echo "Node Management"
 echo ""
 echo "1) Control hornet (start/stop)"
-echo "2) Show live log"
+echo "2) Show last live log"
 echo "3) Edit Hornet configuration"
 echo "4) Update the hornet node"
-echo "5) Reset node database"
-echo "6) Reset/Reload Hornet config"
+echo "5) Delete mainnet database"
+echo "6) Replace Hornet config.json"
 echo ""
 echo "x) Exit"
 echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
 echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "===========================================================" && echo -e $TEXT_RESET
 
 if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
@@ -156,7 +148,7 @@ fi
 if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
     sudo apt install software-properties-common curl jq -y
-    sudo add-apt-repository ppa:certbot/certbot -y
+    sudo add-apt-repository ppa:certbot/certbot -y > /dev/null
     sudo apt update && sudo apt install python-certbot-nginx -y
     sudo apt update && sudo apt dist-upgrade -y && sudo apt upgrade -y && apt autoremove -y
 
@@ -185,39 +177,51 @@ if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "c" ] || [ "$selector" = "C" ]; then
+if [ "$selector" = "c" ] || [ "$selector" = "E" ]; then
+    sudo nano config.sh
+fi
+
+if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
+    echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
+    sudo mv config.sh config.sh.bak
+    echo -e $TEXT_YELLOW && echo "Finished! You can find the backup config in the folder." && echo -e $TEXT_RESET
+    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
+    sudo nano config.sh
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+fi
+
+if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
     domain2=https://$domain:$trinityport
     curl -X POST "https://community.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"pow\": \"$pow\" }" |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
+if [ "$selector" = "f" ] || [ "$selector" = "F" ]; then
 	curl -X DELETE https://community.tanglebay.org/nodes/$password |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
-    echo -e $TEXT_YELLOW && echo "Creating backup of the config file..." && echo -e $TEXT_RESET
-    sudo mv config.sh config.sh.bak
-    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
-    echo -e $TEXT_RED_B && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
-    sudo nano config.sh
-fi
-
 if [ "$selector" = "1" ] ; then
-    echo -e $TEXT_YELLOW && read -p "What would you like to (r)estart or (s)top the node: " selector1
+    echo -e $TEXT_YELLOW && read -p "Would you like to (r)estart/(h)stop/(s)tatus or (c)ancel: " selector1
     echo -e $TEXT_RESET
     if [ "$selector1" = "r" ] || [ "$selector1" = "R" ]; then
         sudo systemctl restart hornet
-        echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
+        echo -e $TEXT_YELLOW && echo "Hornet node (re)started!" && echo -e $TEXT_RESET
+        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+        echo -e $TEXT_RESET
+    fi
+    if [ "$selector1" = "h" ] || [ "$selector1" = "H" ]; then
+        sudo systemctl stop hornet
+        echo -e $TEXT_YELLOW && echo "Hornet node stopped!" && echo -e $TEXT_RESET
         echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
         echo -e $TEXT_RESET
     fi
     if [ "$selector1" = "s" ] || [ "$selector1" = "S" ]; then
-        sudo systemctl stop hornet
-        echo -e $TEXT_YELLOW && echo "Hornet node stopped!" && echo -e $TEXT_RESET
+        sudo systemctl status hornet
         echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
         echo -e $TEXT_RESET
     fi
