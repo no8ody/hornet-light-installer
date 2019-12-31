@@ -273,7 +273,7 @@ if [ "$selector" = "5" ]; then
 fi
 
 if [ "$selector" = "6" ]; then
-    echo -e $TEXT_YELLOW && read -p "Would you like to download the HLI config (y/N): " selector6
+    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest HLI config (y/N): " selector6
     echo -e $TEXT_RESET
     if [ "$selector6" = "y" ] || [ "$selector6" = "y" ]; then
         echo -e $TEXT_YELLOW && echo "Creating backup of the HLI config file..." && echo -e $TEXT_RESET
