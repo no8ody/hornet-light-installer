@@ -27,9 +27,15 @@ if ! [ -x "$(command -v jq)" ]; then
     clear
 fi
 
+############################################################################################################################################################
+
+snapshot=https://dbfiles.iota.org/mainnet/hornet/2019-12-26_113404_UTC-export.gz.bin
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
+
+############################################################################################################################################################
+
 if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
@@ -100,7 +106,7 @@ if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
     sudo tar -xzf /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz -C /tmp
     sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/* /home/$user/hornet/
     sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
-    sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
+    sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
     sudo -u $user wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/gohornet/hornet/master/config.json
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"auto"/'\"$profile\"'/g' {} \;
     sudo find /home/$user/hornet/config.json -type f -exec sed -i 's/"enabled": false/\"enabled\"\: '$dashauth'/g' {} \;
@@ -265,7 +271,7 @@ if [ "$selector" = "5" ]; then
     if [ "$selector5" = "y" ] || [ "$selector5" = "Y" ]; then
         echo -e $TEXT_YELLOW && echo "Downloading snapshot file..." && echo -e $TEXT_RESET
         sudo rm /home/$user/hornet/latest-export.gz.bin
-        sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
+        sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
     fi
     sudo systemctl restart hornet
     echo -e $TEXT_YELLOW && echo "Reset of the database finished and hornet restarted!" && echo -e $TEXT_RESET
