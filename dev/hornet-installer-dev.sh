@@ -266,12 +266,12 @@ if [ "$selector" = "4" ] ; then
     if [ ! -f "/home/$user/hornet/neighbors.json" ]; then
         echo -e $TEXT_YELLOW && echo "No neighbors.json found...Downloading config file!" && echo -e $TEXT_RESET
         sudo -u $user wget -q -O /home/$user/hornet/neighbors.json https://raw.githubusercontent.com/gohornet/hornet/master/neighbors.json
-        sudo sed -i 's/\"example1.neighbor.com:15600\"/\"$neighbor1\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"example2.neighbor.com:15600\"/\"$neighbor2\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"example3.neighbor.com:15600\"/\"$neighbor3\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"Example Neighbor 1\"/\"$nbalias1/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"Example Neighbor 2\"/\"$nbalias2\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"Example Neighbor 3\"/\"$nbalias3\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"Example Neighbor 1\"/\"'$nbalias1'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"Example Neighbor 2\"/\"'$nbalias2'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"Example Neighbor 3\"/\"'$nbalias3'\"/g' /home/$user/hornet/neighbors.json
     fi
     selector=6
 fi
@@ -307,14 +307,14 @@ if [ "$selector" = "6" ]; then
     sudo -u $user mv /home/$user/hornet/config.json /home/$user/hornet/config.json.bak
     echo -e $TEXT_YELLOW && echo "Resetting current hornet configuration..." && echo -e $TEXT_RESET
     sudo -u $user wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/gohornet/hornet/master/config.json
-    
+
     echo -e $TEXT_YELLOW && echo "Setting configuration parameters..." && echo -e $TEXT_RESET
     sudo sed -i 's/\"useProfile\": \"auto\"/\"useProfile\": \"$profile\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"enabled\": false/\"enabled\": $dashauth/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"username\": "hornet"/\"username\": \"$dashuser\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"password\": "hornet"/\"password\": \"$dashpw\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"Port\": 15600/\"Port\": $nbport/g' /home/$user/hornet/config.json
-    
+
     echo -e $TEXT_YELLOW && echo "Restarting hornet node with new configuration..." && echo -e $TEXT_RESET
     sudo systemctl restart hornet
     echo -e $TEXT_YELLOW && echo "Hornet configuration reset finished!" && echo -e $TEXT_RESET
