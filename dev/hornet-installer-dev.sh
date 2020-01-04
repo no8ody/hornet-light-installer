@@ -269,10 +269,9 @@ if [ "$selector" = "4" ] ; then
         sudo sed -i 's/\"example1.neighbor.com:15600\"/\"$neighbor1\"/g' /home/$user/hornet/neighbors.json
         sudo sed -i 's/\"example2.neighbor.com:15600\"/\"$neighbor2\"/g' /home/$user/hornet/neighbors.json
         sudo sed -i 's/\"example3.neighbor.com:15600\"/\"$neighbor3\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"Example Neighbor 1\"/\"$aliasnb1\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"Example Neighbor 2\"/\"$aliasnb2\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"Example Neighbor 3\"/\"$aliasnb3\"/g' /home/$user/hornet/neighbors.json
-        sudo nano /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"alias\": \"Example Neighbor 1\"/\"alias\": $aliasnb1/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"alias\": \"Example Neighbor 2\"/\"alias\": \"'$aliasnb2'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"alias\": \"Example Neighbor 3\"/\"alias\": \"$aliasnb3\"/g' /home/$user/hornet/neighbors.json
     fi
     selector=6
 fi
