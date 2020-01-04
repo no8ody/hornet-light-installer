@@ -32,13 +32,8 @@ nbport=15600
 # If you cannot occupy one of the remaining slots, please leave the default values. You shouldn't have more than 5 neighbors.
 # Please replace the defined neighbors below as soon as possible
 neighbor1=auto01.manapotion.io:15601
-aliasnb1="Autopeering Node 1"
-
 neighbor2=auto02.manapotion.io:15602
-aliasnb2="Autopeering Node 2"
-
 neighbor3=node01.iotatoken.nl:14700
-aliasnb3="Autopeering Node 3"
 
 
 ############################################################################################################################################################
