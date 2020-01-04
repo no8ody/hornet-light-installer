@@ -67,6 +67,9 @@ name="My Awesome Hornet Node"
 # Set if your node should do proof of work in the pool
 pow=true
 
+# You can set a iota donation address if you want! Please keep in mind that you need to change it after spending from the address!!!
+donationaddress=CP9LDJQPBNRBRWWNPI9XSUSLCTWZEBG9NMANXDWDJHMFSHSBVRIWGKVOCFWVETVBWBAKOZURNZE9NSCGDWEZXAXSFW
+
 # Please let it empty! You will receive your password after adding your node to the Tangle Bay Dock
 password=""
 
