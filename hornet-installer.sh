@@ -248,12 +248,19 @@ if [ "$selector" = "3" ] ; then
         sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
     fi
     sudo nano /home/$user/hornet/neighbors.json
+    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " selector3
+    if [ "$selector3" = "y" ] || [ "$selector3" = "y" ]; then
+        sudo systemctl restart hornet
+        echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
+        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+        echo -e $TEXT_RESET
+    fi
 fi
 
 if [ "$selector" = "4" ] ; then
     sudo nano /home/$user/hornet/config.json
-    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " selector3
-    if [ "$selector3" = "y" ] || [ "$selector3" = "y" ]; then
+    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " selector4
+    if [ "$selector4" = "y" ] || [ "$selector4" = "y" ]; then
         sudo systemctl restart hornet
         echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
         echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
@@ -286,9 +293,9 @@ fi
 if [ "$selector" = "6" ]; then
     sudo systemctl stop hornet
     sudo rm -r /home/$user/hornet/mainnetdb/*
-    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest snapshot (y/N): " selector5
+    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest snapshot (y/N): " selector6
     echo -e $TEXT_RESET
-    if [ "$selector5" = "y" ] || [ "$selector5" = "Y" ]; then
+    if [ "$selector6" = "y" ] || [ "$selector6" = "Y" ]; then
         echo -e $TEXT_YELLOW && echo "Downloading snapshot file..." && echo -e $TEXT_RESET
         sudo rm /home/$user/hornet/latest-export.gz.bin
         sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
@@ -300,9 +307,9 @@ if [ "$selector" = "6" ]; then
 fi
 
 if [ "$selector" = "7" ]; then
-    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest HLI config (y/N): " selector6
+    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest HLI config (y/N): " selector7
     echo -e $TEXT_RESET
-    if [ "$selector6" = "y" ] || [ "$selector6" = "y" ]; then
+    if [ "$selector7" = "y" ] || [ "$selector7" = "y" ]; then
         echo -e $TEXT_YELLOW && echo "Creating backup of the HLI config file..." && echo -e $TEXT_RESET
         sudo mv config.sh config.sh.bak
         echo -e $TEXT_YELLOW && echo "Finished! You can find the HLI backup config in the folder." && echo -e $TEXT_RESET
