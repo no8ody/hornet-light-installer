@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.1.3
+version=0.1.4
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -29,7 +29,7 @@ fi
 
 ############################################################################################################################################################
 
-snapshot=https://dbfiles.iota.org/mainnet/hornet/2019-12-26_113404_UTC-export.gz.bin
+snapshot=https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
@@ -80,8 +80,8 @@ echo "Node Management"
 echo ""
 echo "1) Control hornet (start/stop)"
 echo "2) Show last live log"
-echo "3) Edit Hornet neighbors"
-echo "4) Edit Hornet configuration"
+echo "3) Edit neighbors.json"
+echo "4) Edit config.json"
 echo "5) Update the hornet node"
 echo "6) Delete mainnet database"
 echo "7) Replace Hornet config.json"
