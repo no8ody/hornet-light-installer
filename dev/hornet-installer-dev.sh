@@ -169,7 +169,7 @@ if [ "$selector" = "5" ] ; then
     sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"port\": 15600/\"port\": $nbport/g' /home/$user/hornet/config.json    
+    sudo sed -i 's/\"port\": 15600/\"port\": '$nbport'/g' /home/$user/hornet/config.json    
 	sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
 	sudo chown $user:$user /home/$user/hornet/hornet
 	sudo chmod 770 /home/$user/hornet/hornet
@@ -181,6 +181,8 @@ if [ "$selector" = "5" ] ; then
         sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
         sudo nano /home/$user/hornet/neighbors.json
     fi
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
 fi
 
 if [ "$selector" = "6" ]; then
@@ -240,7 +242,7 @@ if [ "$selector" = "10" ]; then
     sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"port\": 15600/\"port\": $nbport/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"port\": 15600/\"port\": '$nbport'/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
     sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
     sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json

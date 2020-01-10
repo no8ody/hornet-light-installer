@@ -66,17 +66,7 @@ echo Latest Hornet: \"$latesthornet\"
 echo -e $TEXT_RESET
 
 echo -e $TEXT_YELLOW
-echo "Installer Management"
-echo ""
-echo "a) Install the hornet node"
-echo "b) Install the reverse proxy"
-echo "c) Edit HLI config"
-echo "d) Download latest HLI config"
-echo "e) Add your node to Tangle Bay"
-echo "f) Remove your node from Tangle Bay"
-echo ""
-echo ""
-echo "Node Management"
+echo "Hornet Manager"
 echo ""
 echo "1) Control hornet (start/stop)"
 echo "2) Show last live log"
@@ -84,15 +74,155 @@ echo "3) Edit neighbors.json"
 echo "4) Edit config.json"
 echo "5) Update the hornet node"
 echo "6) Delete mainnet database"
-echo "7) Replace Hornet config.json"
+echo ""
+echo ""
+echo "Tangle Bay Manger"
+echo ""
+echo "7) Add your node to Tangle Bay"
+echo "8) Remove your node from Tangle Bay"
+echo "9) Update node on Tangle Bay"
+echo ""
+echo ""
+echo "Install Manager"
+echo ""
+echo "10) Install hornet node"
+echo "11) Install nginx reverse proxy"
+echo "12) Download latest HLI config"
+echo "13) Edit HLI config"
+echo ""
 echo ""
 echo "x) Exit"
 echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && echo "===========================================================" && echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
 echo -e $TEXT_RESET
-echo -e $TEXT_YELLOW && echo "===========================================================" && echo -e $TEXT_RESET
 
-if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
+
+if [ "$selector" = "1" ] ; then
+    echo -e $TEXT_RED_B && read -p "Would you like to (r)estart/(h)stop/(s)tatus or (c)ancel: " selector1
+    echo -e $TEXT_RESET
+    if [ "$selector1" = "r" ] || [ "$selector1" = "R" ]; then
+        unset selector1
+        sudo systemctl restart hornet
+        echo -e $TEXT_YELLOW && echo "Hornet node (re)started!" && echo -e $TEXT_RESET
+        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+        echo -e $TEXT_RESET
+    fi
+    if [ "$selector1" = "h" ] || [ "$selector1" = "H" ]; then
+        unset selector1
+        sudo systemctl stop hornet
+        echo -e $TEXT_YELLOW && echo "Hornet node stopped!" && echo -e $TEXT_RESET
+        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+        echo -e $TEXT_RESET
+    fi
+    if [ "$selector1" = "s" ] || [ "$selector1" = "S" ]; then
+        unset selector1
+        sudo systemctl status hornet
+        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+        echo -e $TEXT_RESET
+    fi
+fi
+
+if [ "$selector" = "2" ] ; then
+    sudo journalctl -fu hornet | less -FRSXM
+fi
+
+if [ "$selector" = "3" ] ; then
+    if [ ! -f "/home/$user/hornet/neighbors.json" ]; then
+        echo -e $TEXT_YELLOW && echo "No neighbors.json found...Downloading config file!" && echo -e $TEXT_RESET
+        sudo -u $user wget -q -O /home/$user/hornet/neighbors.json https://raw.githubusercontent.com/gohornet/hornet/master/neighbors.json
+        sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
+    fi
+    sudo nano /home/$user/hornet/neighbors.json
+    echo -e $TEXT_RED_B && read -p "Would you like to restart hornet now (y/N): " selector3
+    if [ "$selector3" = "y" ] || [ "$selector3" = "y" ]; then
+        sudo systemctl restart hornet
+        echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
+        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+        echo -e $TEXT_RESET
+    fi
+fi
+
+if [ "$selector" = "4" ] ; then
+    sudo nano /home/$user/hornet/config.json
+    echo -e $TEXT_RED_B && read -p "Would you like to restart hornet now (y/N): " selector4
+    if [ "$selector4" = "y" ] || [ "$selector4" = "y" ]; then
+        sudo systemctl restart hornet
+        echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
+        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+        echo -e $TEXT_RESET
+    fi
+fi
+
+if [ "$selector" = "5" ] ; then
+	echo -e $TEXT_YELLOW && echo "Get latest hornet version..." && echo -e $TEXT_RESET
+	echo -e $TEXT_YELLOW && echo "Stopping hornet node...(Please note that this may take some time)" && echo -e $TEXT_RESET
+	sudo systemctl stop hornet
+	echo -e $TEXT_YELLOW && echo "Downloading new hornet file..." && echo -e $TEXT_RESET
+	sudo wget -O /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_"$os".tar.gz
+	sudo tar -xzf /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz -C /tmp
+	sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/hornet /home/$user/hornet/
+    sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/config.json /home/$user/hornet/
+    sudo sed -i 's/\"useProfile\": \"auto\"/\"useProfile\": \"'$profile'\"/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"port\": 15600/\"port\": '$nbport'/g' /home/$user/hornet/config.json    
+	sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
+	sudo chown $user:$user /home/$user/hornet/hornet
+	sudo chmod 770 /home/$user/hornet/hornet
+    if [ ! -f "/home/$user/hornet/neighbors.json" ]; then
+        echo -e $TEXT_YELLOW && echo "No neighbors.json found...Downloading config file!" && echo -e $TEXT_RESET
+        sudo -u $user wget -q -O /home/$user/hornet/neighbors.json https://raw.githubusercontent.com/gohornet/hornet/develop/neighbors.json
+        sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
+        sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
+        sudo nano /home/$user/hornet/neighbors.json
+    fi
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+fi
+
+if [ "$selector" = "6" ]; then
+    sudo systemctl stop hornet
+    sudo rm -r /home/$user/hornet/mainnetdb/*
+    echo -e $TEXT_RED_B && read -p "Would you like to download the latest snapshot (y/N): " selector6
+    echo -e $TEXT_RESET
+    if [ "$selector6" = "y" ] || [ "$selector6" = "Y" ]; then
+        echo -e $TEXT_YELLOW && echo "Downloading snapshot file..." && echo -e $TEXT_RESET
+        sudo rm /home/$user/hornet/latest-export.gz.bin
+        sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
+    fi
+    sudo systemctl restart hornet
+    echo -e $TEXT_YELLOW && echo "Reset of the database finished and hornet restarted!" && echo -e $TEXT_RESET
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+fi
+
+if [ "$selector" = "7" ]; then
+    domain2=https://$domain:$trinityport
+    curl -X POST "https://api.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"address\": \"$donationaddress\", \"pow\": \"$pow\" }" |jq
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+fi
+
+if [ "$selector" = "8" ]; then
+	curl -X DELETE https://api.tanglebay.org/nodes/$password |jq
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+fi
+
+if [ "$selector" = "9" ]; then
+	curl -X DELETE https://api.tanglebay.org/nodes/$password |jq
+    domain2=https://$domain:$trinityport
+    curl -X POST "https://api.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"address\": \"$donationaddress\", \"pow\": \"$pow\", \"password\": \"$password\" }" |jq
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+fi
+
+if [ "$selector" = "10" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
     sudo apt install nano -y
 
@@ -112,7 +242,7 @@ if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
     sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"Port\": 15600/\"Port\": $nbport/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"port\": 15600/\"port\": '$nbport'/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
     sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
     sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
@@ -153,7 +283,7 @@ if [ "$selector" = "a" ] || [ "$selector" = "A" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
+if [ "$selector" = "11" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
     sudo apt install software-properties-common curl jq -y
     sudo add-apt-repository ppa:certbot/certbot -y > /dev/null
@@ -185,11 +315,7 @@ if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "c" ] || [ "$selector" = "E" ]; then
-    sudo nano config.sh
-fi
-
-if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
+if [ "$selector" = "12" ]; then
     echo -e $TEXT_YELLOW && echo "Creating backup of the HLI config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
     echo -e $TEXT_YELLOW && echo "Finished! You can find the HLI backup config in the folder." && echo -e $TEXT_RESET
@@ -200,140 +326,8 @@ if [ "$selector" = "d" ] || [ "$selector" = "D" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "e" ] || [ "$selector" = "E" ]; then
-    domain2=https://$domain:$trinityport
-    curl -X POST "https://api.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"pow\": \"$pow\" }" |jq
-    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
-fi
-
-if [ "$selector" = "f" ] || [ "$selector" = "F" ]; then
-	curl -X DELETE https://api.tanglebay.org/nodes/$password |jq
-    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
-fi
-
-if [ "$selector" = "1" ] ; then
-    echo -e $TEXT_YELLOW && read -p "Would you like to (r)estart/(h)stop/(s)tatus or (c)ancel: " selector1
-    echo -e $TEXT_RESET
-    if [ "$selector1" = "r" ] || [ "$selector1" = "R" ]; then
-        sudo systemctl restart hornet
-        echo -e $TEXT_YELLOW && echo "Hornet node (re)started!" && echo -e $TEXT_RESET
-        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-        echo -e $TEXT_RESET
-    fi
-    if [ "$selector1" = "h" ] || [ "$selector1" = "H" ]; then
-        sudo systemctl stop hornet
-        echo -e $TEXT_YELLOW && echo "Hornet node stopped!" && echo -e $TEXT_RESET
-        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-        echo -e $TEXT_RESET
-    fi
-    if [ "$selector1" = "s" ] || [ "$selector1" = "S" ]; then
-        sudo systemctl status hornet
-        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-        echo -e $TEXT_RESET
-    fi
-fi
-
-if [ "$selector" = "2" ] ; then
-    sudo journalctl -fu hornet | less -FRSXM
-fi
-
-if [ "$selector" = "3" ] ; then
-    if [ ! -f "/home/$user/hornet/neighbors.json" ]; then
-        echo -e $TEXT_YELLOW && echo "No neighbors.json found...Downloading config file!" && echo -e $TEXT_RESET
-        sudo -u $user wget -q -O /home/$user/hornet/neighbors.json https://raw.githubusercontent.com/gohornet/hornet/master/neighbors.json
-        sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
-    fi
-    sudo nano /home/$user/hornet/neighbors.json
-    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " selector3
-    if [ "$selector3" = "y" ] || [ "$selector3" = "y" ]; then
-        sudo systemctl restart hornet
-        echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
-        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-        echo -e $TEXT_RESET
-    fi
-fi
-
-if [ "$selector" = "4" ] ; then
-    sudo nano /home/$user/hornet/config.json
-    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " selector4
-    if [ "$selector4" = "y" ] || [ "$selector4" = "y" ]; then
-        sudo systemctl restart hornet
-        echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
-        echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-        echo -e $TEXT_RESET
-    fi
-fi
-
-if [ "$selector" = "5" ] ; then
-	echo -e $TEXT_YELLOW && echo "Get latest hornet version..." && echo -e $TEXT_RESET
-	echo -e $TEXT_YELLOW && echo "Stopping hornet node...(Please note that this may take some time)" && echo -e $TEXT_RESET
-	sudo systemctl stop hornet
-	echo -e $TEXT_YELLOW && echo "Downloading new hornet file..." && echo -e $TEXT_RESET
-	sudo wget -O /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_"$os".tar.gz
-	sudo tar -xzf /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz -C /tmp
-	sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/hornet /home/$user/hornet/
-	sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
-	sudo chown $user:$user /home/$user/hornet/hornet
-	sudo chmod 770 /home/$user/hornet/hornet
-    if [ ! -f "/home/$user/hornet/neighbors.json" ]; then
-        echo -e $TEXT_YELLOW && echo "No neighbors.json found...Downloading config file!" && echo -e $TEXT_RESET
-        sudo -u $user wget -q -O /home/$user/hornet/neighbors.json https://raw.githubusercontent.com/gohornet/hornet/develop/neighbors.json
-        sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
-        sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
-        sudo nano /home/$user/hornet/neighbors.json
-    fi
-    selector=7
-fi
-
-if [ "$selector" = "6" ]; then
-    sudo systemctl stop hornet
-    sudo rm -r /home/$user/hornet/mainnetdb/*
-    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest snapshot (y/N): " selector6
-    echo -e $TEXT_RESET
-    if [ "$selector6" = "y" ] || [ "$selector6" = "Y" ]; then
-        echo -e $TEXT_YELLOW && echo "Downloading snapshot file..." && echo -e $TEXT_RESET
-        sudo rm /home/$user/hornet/latest-export.gz.bin
-        sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
-    fi
-    sudo systemctl restart hornet
-    echo -e $TEXT_YELLOW && echo "Reset of the database finished and hornet restarted!" && echo -e $TEXT_RESET
-    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
-fi
-
-if [ "$selector" = "7" ]; then
-    echo -e $TEXT_YELLOW && read -p "Would you like to download the latest HLI config (y/N): " selector7
-    echo -e $TEXT_RESET
-    if [ "$selector7" = "y" ] || [ "$selector7" = "y" ]; then
-        echo -e $TEXT_YELLOW && echo "Creating backup of the HLI config file..." && echo -e $TEXT_RESET
-        sudo mv config.sh config.sh.bak
-        echo -e $TEXT_YELLOW && echo "Finished! You can find the HLI backup config in the folder." && echo -e $TEXT_RESET
-        sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
-        echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
-        sudo nano config.sh
-    fi
-    echo -e $TEXT_YELLOW && echo "Backup current config.json..." && echo -e $TEXT_RESET
-    sudo -u $user mv /home/$user/hornet/config.json /home/$user/hornet/config.json.bak
-    echo -e $TEXT_YELLOW && echo "Resetting current hornet configuration..." && echo -e $TEXT_RESET
-    sudo -u $user wget -q -O /home/$user/hornet/config.json https://raw.githubusercontent.com/gohornet/hornet/master/config.json
-
-    echo -e $TEXT_YELLOW && echo "Setting configuration parameters..." && echo -e $TEXT_RESET
-    sudo sed -i 's/\"useProfile\": \"auto\"/\"useProfile\": \"'$profile'\"/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"Port\": 15600/\"Port\": '$nbport'/g' /home/$user/hornet/config.json
-
-    echo -e $TEXT_YELLOW && echo "Restarting hornet node with new configuration..." && echo -e $TEXT_RESET
-    sudo systemctl restart hornet
-    echo -e $TEXT_YELLOW && echo "Hornet configuration reset finished!" && echo -e $TEXT_RESET
-    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
-    echo -e $TEXT_RESET
+if [ "$selector" = "13" ]; then
+    sudo nano config.sh
 fi
 
 if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
