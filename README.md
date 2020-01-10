@@ -10,7 +10,6 @@
 3. `sudo chmod +x hornet-installer.sh`
 5. Run the installer: `sudo ./hornet-installer.sh`
 6. With the first start no config is detected and it will downloaded automatically and opened to edit.
-7. Re-run the installer again after editing the config.sh file `sudo ./hornet-installer.sh`
 
 
 # Install reverse proxy #
@@ -20,7 +19,7 @@
 
 1. `sudo nano config.sh` and set your domain
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the "b" option
+3. Choose the option "11"
 4. Enter your e-mail address for notifications from LetsEncrypt
 5. Agree the terms with `A`
 6. Choose `N` next
@@ -32,18 +31,25 @@
 
 # Tangle Bay Pool #
 
-**I would be very happy if you would join the Tangle Bay Pool so that together we can provide a strong and reliable node to the ecosystem and thus the Trinity users.**
+**I would be very happy if you would join the Tangle Bay Dock so that together we can provide a strong and reliable node to the ecosystem and thus the Trinity users.**
 
-**To add your node to the pool please follow these steps:**
-1. `sudo nano hornet-installer.sh` and set your node name and pow option
+**To add your node to the dock please follow these steps:**
+1. `sudo nano config.sh` and set your node name and pow option
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the "c" option
-4. You get now a password! Please copy the password and save it.
-5. You're done, welcome to the pool party!
+3. Choose the option "7"
+4. You get now a password! Please copy the password and save it in the config.sh (and also write it down!).
+5. You're done, welcome to the dock party!
 
-**To remove your node from the pool please follow these steps:**
+**To remove your node from the dock please follow these steps:**
 1. `sudo nano config.sh` and set your password
 2. `sudo ./hornet-installer.sh` and run the script
 3. Choose the "d" option
 4. If your node details shows up, your node was successfully removed.
-5. Thank you very much for your participation in the pool!
+5. Thank you very much for your participation in the dock!
+
+**To udpdate your node on the dock please follow these steps:**
+1. `sudo nano config.sh` and set your donation address and make sure you have your password set
+2. `sudo ./hornet-installer.sh` and run the script
+3. Choose the option "9"
+4. If your node details shows up, your node was successfully updated.
+5. Thank you very much for your participation in the dock!
