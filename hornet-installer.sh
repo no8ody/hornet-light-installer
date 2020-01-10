@@ -40,6 +40,9 @@ if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
+    mv config.sh config.sh.bak
+    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    sudo nano config.sh
     sleep 2
     ScriptLoc=$(readlink -f "$0")
     exec "$ScriptLoc"
@@ -164,12 +167,14 @@ if [ "$selector" = "5" ] ; then
 	sudo wget -O /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_"$os".tar.gz
 	sudo tar -xzf /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz -C /tmp
 	sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/hornet /home/$user/hornet/
+    echo -e $TEXT_YELLOW && echo "Backup current hornet config file..." && echo -e $TEXT_RESET
+    mv /home/$user/hornet/config.json /home/$user/hornet/config.json.bak
     sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/config.json /home/$user/hornet/
     sudo sed -i 's/\"useProfile\": \"auto\"/\"useProfile\": \"'$profile'\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"port\": 15600/\"port\": '$nbport'/g' /home/$user/hornet/config.json    
+    sudo sed -i 's/\"port\": 15600/\"port\": '$nbport'/g' /home/$user/hornet/config.json
 	sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
 	sudo chown $user:$user /home/$user/hornet/hornet
 	sudo chmod 770 /home/$user/hornet/hornet
