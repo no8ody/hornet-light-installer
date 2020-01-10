@@ -92,14 +92,14 @@ echo "13) Edit HLI config"
 echo ""
 echo ""
 echo "x) Exit"
-echo ""
-echo -e $TEXT_RESET
-echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
 echo -e $TEXT_RESET
 echo -e $TEXT_YELLOW && echo "===========================================================" && echo -e $TEXT_RESET
+echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
+echo -e $TEXT_RESET
+
 
 if [ "$selector" = "1" ] ; then
-    echo -e $TEXT_YELLOW && read -p "Would you like to (r)estart/(h)stop/(s)tatus or (c)ancel: " selector1
+    echo -e $TEXT_RED_B && read -p "Would you like to (r)estart/(h)stop/(s)tatus or (c)ancel: " selector1
     echo -e $TEXT_RESET
     if [ "$selector1" = "r" ] || [ "$selector1" = "R" ]; then
         unset selector1
@@ -136,7 +136,7 @@ if [ "$selector" = "3" ] ; then
         sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
     fi
     sudo nano /home/$user/hornet/neighbors.json
-    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " selector3
+    echo -e $TEXT_RED_B && read -p "Would you like to restart hornet now (y/N): " selector3
     if [ "$selector3" = "y" ] || [ "$selector3" = "y" ]; then
         sudo systemctl restart hornet
         echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
@@ -147,7 +147,7 @@ fi
 
 if [ "$selector" = "4" ] ; then
     sudo nano /home/$user/hornet/config.json
-    echo -e $TEXT_YELLOW && read -p "Would you like to restart hornet now (y/N): " selector4
+    echo -e $TEXT_RED_B && read -p "Would you like to restart hornet now (y/N): " selector4
     if [ "$selector4" = "y" ] || [ "$selector4" = "y" ]; then
         sudo systemctl restart hornet
         echo -e $TEXT_YELLOW && echo "Hornet node restarted!" && echo -e $TEXT_RESET
@@ -164,6 +164,12 @@ if [ "$selector" = "5" ] ; then
 	sudo wget -O /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_"$os".tar.gz
 	sudo tar -xzf /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz -C /tmp
 	sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/hornet /home/$user/hornet/
+    sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/config.json /home/$user/hornet/
+    sudo sed -i 's/\"useProfile\": \"auto\"/\"useProfile\": \"'$profile'\"/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"port\": 15600/\"port\": $nbport/g' /home/$user/hornet/config.json    
 	sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
 	sudo chown $user:$user /home/$user/hornet/hornet
 	sudo chmod 770 /home/$user/hornet/hornet
@@ -234,7 +240,7 @@ if [ "$selector" = "10" ]; then
     sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
-    sudo sed -i 's/\"Port\": 15600/\"Port\": $nbport/g' /home/$user/hornet/config.json
+    sudo sed -i 's/\"port\": 15600/\"port\": $nbport/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
     sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
     sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
