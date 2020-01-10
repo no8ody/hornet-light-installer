@@ -40,7 +40,9 @@ if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
+    echo -e $TEXT_YELLOW && echo "Backup current HLI config..." && echo -e $TEXT_RESET
     mv config.sh config.sh.bak
+    sleep 2
     sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
     sudo nano config.sh
     sleep 2
