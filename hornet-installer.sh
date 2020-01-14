@@ -162,6 +162,8 @@ if [ "$selector" = "4" ] ; then
 fi
 
 if [ "$selector" = "5" ] ; then
+    latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
+    latesthornet="${latesthornet:1}"
 	echo -e $TEXT_YELLOW && echo "Get latest hornet version..." && echo -e $TEXT_RESET
 	echo -e $TEXT_YELLOW && echo "Stopping hornet node...(Please note that this may take some time)" && echo -e $TEXT_RESET
 	sudo systemctl stop hornet
@@ -230,6 +232,8 @@ if [ "$selector" = "9" ]; then
 fi
 
 if [ "$selector" = "10" ]; then
+    latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
+    latesthornet="${latesthornet:1}"
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
     sudo apt install nano -y
 
