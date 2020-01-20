@@ -212,21 +212,21 @@ fi
 
 if [ "$selector" = "7" ]; then
     domain2=https://$domain:$trinityport
-    curl -X POST "https://api.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"address\": \"$donationaddress\", \"pow\": \"$pow\" }" |jq
+    curl -X POST "https://register.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"address\": \"$donationaddress\", \"pow\": \"$pow\" }" |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
 
 if [ "$selector" = "8" ]; then
-	curl -X DELETE https://api.tanglebay.org/nodes/$password |jq
+	curl -X DELETE https://register.tanglebay.org/nodes/$password |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
 
 if [ "$selector" = "9" ]; then
-	curl --silent --output /dev/null -X DELETE https://api.tanglebay.org/nodes/$password
+	curl --silent --output /dev/null -X DELETE https://register.tanglebay.org/nodes/$password
     domain2=https://$domain:$trinityport
-    curl -X POST "https://api.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"address\": \"$donationaddress\", \"pow\": \"$pow\", \"password\": \"$password\" }" |jq
+    curl -X POST "https://register.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"address\": \"$donationaddress\", \"pow\": \"$pow\", \"password\": \"$password\" }" |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
