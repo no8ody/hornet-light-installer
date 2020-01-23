@@ -29,7 +29,6 @@ fi
 
 ############################################################################################################################################################
 
-snapshot="$(curl -s https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/snapshot)"
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
@@ -40,10 +39,10 @@ if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo "New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
-    echo -e $TEXT_YELLOW && echo "Backup current HLI config..." && echo -e $TEXT_RESET
-    mv config.sh config.sh.bak
-    sleep 2
-    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/config.sh
+    #echo -e $TEXT_YELLOW && echo "Backup current HLI config..." && echo -e $TEXT_RESET
+    #mv config.sh config.sh.bak
+    #sleep 2
+    #sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/config.sh
     sudo nano config.sh
     sleep 2
     ScriptLoc=$(readlink -f "$0")
@@ -201,6 +200,7 @@ if [ "$selector" = "6" ]; then
     echo -e $TEXT_RESET
     if [ "$selector6" = "y" ] || [ "$selector6" = "Y" ]; then
         echo -e $TEXT_YELLOW && echo "Downloading snapshot file..." && echo -e $TEXT_RESET
+        snapshot="$(curl -s https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/snapshot)"
         sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
     fi
     sudo systemctl restart hornet
@@ -247,6 +247,7 @@ if [ "$selector" = "10" ]; then
     sudo tar -xzf /tmp/HORNET-"$latesthornet"_Linux_"$os".tar.gz -C /tmp
     sudo mv /tmp/HORNET-"$latesthornet"_Linux_"$os"/* /home/$user/hornet/
     sudo rm -r /tmp/HORNET-"$latesthornet"_Linux_"$os"*
+    snapshot="$(curl -s https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/snapshot)"
     sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
     sudo sed -i 's/\"useProfile\": \"auto\"/\"useProfile\": \"'$profile'\"/g' /home/$user/hornet/config.json
     sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
