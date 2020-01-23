@@ -11,7 +11,7 @@
 ############################################################################################################################################################
 
 # ARM = Raspberry PI3+/4 (DietPi 32bit) | ARM64 = Raspberry4 4GB (Ubuntu 64bit) | x86_64 = VPS/Root (64bit)
-os=ARM
+os=auto
 
 # You can specify a own username for the hornet node
 user=iota
@@ -20,7 +20,7 @@ user=iota
 profile=1gb
 
 # Define if a username and password is required for the dashboard
-dashauth=false
+dashauth=true
 
 # For the Dashboard access please define a username and a password below
 dashuser="hornella"
@@ -65,7 +65,7 @@ dashport=14267
 name="My Awesome Hornet Node"
 
 # Set if your node should do proof of work in the pool
-pow=true
+pow=false
 
 # You can set a iota donation address if you want! Please keep in mind that you need to change it after spending from the address!!!
 donationaddress=CP9LDJQPBNRBRWWNPI9XSUSLCTWZEBG9NMANXDWDJHMFSHSBVRIWGKVOCFWVETVBWBAKOZURNZE9NSCGDWEZXAXSFW
