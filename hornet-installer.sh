@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.1.6
+version=0.1.7
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -29,7 +29,7 @@ fi
 
 ############################################################################################################################################################
 
-snapshot=https://dbfiles.iota.org/mainnet/hornet/latest-export.gz.bin
+snapshot="$(curl https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/snapshot)"
 latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
 latesthornet="${latesthornet:1}"
 latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-installer/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
@@ -43,7 +43,7 @@ if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_YELLOW && echo "Backup current HLI config..." && echo -e $TEXT_RESET
     mv config.sh config.sh.bak
     sleep 2
-    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/config.sh
     sudo nano config.sh
     sleep 2
     ScriptLoc=$(readlink -f "$0")
@@ -53,7 +53,7 @@ fi
 
 if [ ! -f "config.sh" ]; then
     echo -e $TEXT_YELLOW && echo "First run detected...Downloading config file!" && echo -e $TEXT_RESET
-    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/config.sh
     sudo nano config.sh
 fi
 
@@ -184,7 +184,7 @@ if [ "$selector" = "5" ] ; then
 	sudo chmod 770 /home/$user/hornet/hornet
     if [ ! -f "/home/$user/hornet/neighbors.json" ]; then
         echo -e $TEXT_YELLOW && echo "No neighbors.json found...Downloading config file!" && echo -e $TEXT_RESET
-        sudo -u $user wget -q -O /home/$user/hornet/neighbors.json https://raw.githubusercontent.com/gohornet/hornet/develop/neighbors.json
+        sudo -u $user wget -q -O /home/$user/hornet/neighbors.json https://raw.githubusercontent.com/gohornet/hornet/master/neighbors.json
         sudo sed -i 's/\"example1.neighbor.com:15600\"/\"'$neighbor1'\"/g' /home/$user/hornet/neighbors.json
         sudo sed -i 's/\"example2.neighbor.com:15600\"/\"'$neighbor2'\"/g' /home/$user/hornet/neighbors.json
         sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
@@ -201,7 +201,6 @@ if [ "$selector" = "6" ]; then
     echo -e $TEXT_RESET
     if [ "$selector6" = "y" ] || [ "$selector6" = "Y" ]; then
         echo -e $TEXT_YELLOW && echo "Downloading snapshot file..." && echo -e $TEXT_RESET
-        sudo rm /home/$user/hornet/latest-export.gz.bin
         sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
     fi
     sudo systemctl restart hornet
@@ -307,7 +306,7 @@ if [ "$selector" = "11" ]; then
     sudo systemctl daemon-reload
 
     echo -e $TEXT_YELLOW && echo "Downloading Nginx configuration..." && echo -e $TEXT_RESET
-    sudo wget -q -O /etc/nginx/sites-available/default https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/nginx.conf
+    sudo wget -q -O /etc/nginx/sites-available/default https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/nginx.conf
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/domain.tld/'$domain'/g' {} \;
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/14266/'$trinityport'/g' {} \;
     sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/14267/'$dashport'/g' {} \;
@@ -330,7 +329,7 @@ if [ "$selector" = "12" ]; then
     echo -e $TEXT_YELLOW && echo "Creating backup of the HLI config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
     echo -e $TEXT_YELLOW && echo "Finished! You can find the HLI backup config in the folder." && echo -e $TEXT_RESET
-    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/configs/config.sh
+    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/config.sh
     echo -e $TEXT_YELLOW && echo "Downloading latest HLI config completed!" && echo -e $TEXT_RESET
     sudo nano config.sh
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'

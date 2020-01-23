@@ -10,7 +10,7 @@
 # CONFIG FOR THE HORNET INSTALLER
 ############################################################################################################################################################
 
-# ARM = Raspberry PI3+/4 (e.g. DietPi 32bit) | ARM64 = Raspberry4 3b+/4 (4GB) (e.g. Ubuntu 64bit) | x86_64 = VPS/Root (e.g. 64bit)
+# ARM = Raspberry PI3+/4 (DietPi 32bit) | ARM64 = Raspberry4 4GB (Ubuntu 64bit) | x86_64 = VPS/Root (64bit)
 os=ARM
 
 # You can specify a own username for the hornet node
@@ -19,7 +19,7 @@ user=iota
 # Please set your profile in RAM-GB (PI3B+/4(x86)=1gb, PI4(Ubuntu64)=2gb or default = auto
 profile=1gb
 
-# Define if a username and password is required for the dashboard (true/false)
+# Define if a username and password is required for the dashboard
 dashauth=false
 
 # For the Dashboard access please define a username and a password below
@@ -31,9 +31,14 @@ nbport=15600
 
 # If you cannot occupy one of the remaining slots, please leave the default values. You shouldn't have more than 5 neighbors.
 # Please replace the defined neighbors below as soon as possible
-neighbor1=auto01.manapotion.io:15601
-neighbor2=auto02.manapotion.io:15602
+neighbor1=autotether.tanglebay.org:15600
+aliasnb1="AutoTether Node 1"
+
+neighbor2=auto01.manapotion.io:15602
+aliasnb2="AutoTether Node 2"
+
 neighbor3=node01.iotatoken.nl:14700
+aliasnb3="AutoTether Node 3"
 
 
 ############################################################################################################################################################
@@ -60,14 +65,12 @@ dashport=14267
 name="My Awesome Hornet Node"
 
 # Set if your node should do proof of work in the pool
-pow=false
+pow=true
 
 # You can set a iota donation address if you want! Please keep in mind that you need to change it after spending from the address!!!
 donationaddress=CP9LDJQPBNRBRWWNPI9XSUSLCTWZEBG9NMANXDWDJHMFSHSBVRIWGKVOCFWVETVBWBAKOZURNZE9NSCGDWEZXAXSFW
 
-############################################################################################################################################################
-
-# !!! Please let it empty, you will receive your password after adding your node to the Tangle Bay Dock !!!
+# Please let it empty! You will receive your password after adding your node to the Tangle Bay Dock
 password=""
 
 ############################################################################################################################################################
