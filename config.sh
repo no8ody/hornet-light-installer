@@ -11,7 +11,7 @@
 ############################################################################################################################################################
 
 # ARM = Raspberry PI3+/4 (DietPi 32bit) | ARM64 = Raspberry4 4GB (Ubuntu 64bit) | x86_64 = VPS/Root (64bit)
-os=auto
+os=ARM
 
 # You can specify a own username for the hornet node
 user=iota
