@@ -34,11 +34,7 @@ nbport=15600
 neighbor1=auto01.manapotion.io:15601
 aliasnb1="AutoTether Node 1"
 
-<<<<<<< HEAD
 neighbor2=node02.iotatoken.nl:14700
-=======
-neighbor2=auto02.manapotion.io:15602
->>>>>>> f924b5413b331f201e1a7969d490cc26932f9ef0
 aliasnb2="AutoTether Node 2"
 
 neighbor3=node01.iotatoken.nl:14700
