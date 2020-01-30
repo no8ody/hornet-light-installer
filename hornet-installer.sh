@@ -79,21 +79,22 @@ echo "3) Edit neighbors.json"
 echo "4) Edit config.json"
 echo "5) Update the hornet node"
 echo "6) Delete mainnet database"
+echo "7) Manage watchdog"
 echo ""
 echo ""
 echo "Tangle Bay Manager"
 echo ""
-echo "7) Add your node to Tangle Bay"
-echo "8) Remove your node from Tangle Bay"
-echo "9) Update node on Tangle Bay"
+echo "8) Add your node to Tangle Bay"
+echo "9) Remove your node from Tangle Bay"
+echo "10) Update node on Tangle Bay"
 echo ""
 echo ""
 echo "Install Manager"
 echo ""
-echo "10) Install hornet node"
-echo "11) Install nginx reverse proxy"
-echo "12) Download latest HLI config"
-echo "13) Edit HLI config"
+echo "11) Install hornet node"
+echo "12) Install nginx reverse proxy"
+echo "13) Download latest HLI config"
+echo "14) Edit HLI config"
 echo ""
 echo ""
 echo "x) Exit"
@@ -210,19 +211,46 @@ if [ "$selector" = "6" ]; then
 fi
 
 if [ "$selector" = "7" ]; then
+    echo -e $TEXT_RED_B && read -p "Would you like to (e)nable/(d)isable or (c)ancel hornet watchdog: " selector7
+    echo -e $TEXT_RESET
+    if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
+        echo -e $TEXT_YELLOW && echo "Enable hornet watchdog..." && echo -e $TEXT_RESET
+        sudo -u $iota echo "#!/bin/bash" > /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "ps -ef | grep abc | grep -v grep > /dev/null" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "if [ $?  -eq "0" ]; then" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "exit 0" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "else" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "sudo systemctl stop hornet" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "rm -r /home/$user/hornet/mainnetdb" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "sudo systemctl start hornet" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "fi" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $iota echo "exit 0" >>  /home/$user/hornet/watchdog.sh
+        sudo echo '*/15 * * * * iota bash /home/'$user'/hornet/watchdog.sh' | sudo tee /etc/cron.d/hornet_watchdog > /dev/null
+    fi
+    if [ "$selector7" = "d" ] || [ "$selector7" = "D" ]; then
+        echo -e $TEXT_YELLOW && echo "Disable hornet watchdog..." && echo -e $TEXT_RESET
+        sudo rm /etc/cron.d/hornet_watchdog
+    fi
+    echo -e $TEXT_YELLOW && echo "Hornet watchdog configuration finished!" && echo -e $TEXT_RESET
+    echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+fi
+
+if [ "$selector" = "8" ]; then
     domain2=https://$domain:$trinityport
     curl -X POST "https://register.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"address\": \"$donationaddress\", \"pow\": \"$pow\" }" |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "8" ]; then
+if [ "$selector" = "9" ]; then
 	curl -X DELETE https://register.tanglebay.org/nodes/$password |jq
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "9" ]; then
+if [ "$selector" = "10" ]; then
 	curl --silent --output /dev/null -X DELETE https://register.tanglebay.org/nodes/$password
     domain2=https://$domain:$trinityport
     curl -X POST "https://register.tanglebay.org/nodes" -H  "accept: */*" -H  "Content-Type: application/json" -d "{ \"name\": \"$name\", \"url\": \"$domain2\", \"address\": \"$donationaddress\", \"pow\": \"$pow\", \"password\": \"$password\" }" |jq
@@ -230,7 +258,7 @@ if [ "$selector" = "9" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "10" ]; then
+if [ "$selector" = "11" ]; then
     latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
     latesthornet="${latesthornet:1}"
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
@@ -293,7 +321,7 @@ if [ "$selector" = "10" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "11" ]; then
+if [ "$selector" = "12" ]; then
     echo -e $TEXT_YELLOW && echo "Installing necessary packages..." && echo -e $TEXT_RESET
     sudo apt install software-properties-common curl jq -y
     sudo add-apt-repository ppa:certbot/certbot -y > /dev/null
@@ -325,7 +353,7 @@ if [ "$selector" = "11" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "12" ]; then
+if [ "$selector" = "13" ]; then
     echo -e $TEXT_YELLOW && echo "Creating backup of the HLI config file..." && echo -e $TEXT_RESET
     sudo mv config.sh config.sh.bak
     echo -e $TEXT_YELLOW && echo "Finished! You can find the HLI backup config in the folder." && echo -e $TEXT_RESET
@@ -336,7 +364,7 @@ if [ "$selector" = "12" ]; then
     echo -e $TEXT_RESET
 fi
 
-if [ "$selector" = "13" ]; then
+if [ "$selector" = "14" ]; then
     sudo nano config.sh
 fi
 
