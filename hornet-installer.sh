@@ -218,7 +218,7 @@ if [ "$selector" = "7" ]; then
         sudo -u $user touch /home/$user/hornet/watchdog.sh
         sudo chmod +x /home/$user/hornet/watchdog.sh
         sudo echo "#!/bin/bash" > /home/$user/hornet/watchdog.sh
-        sudo echo "ps -ef | grep abc | grep -v grep > /dev/null" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "ps -ef | grep hornet | grep -v grep > /dev/null" >>  /home/$user/hornet/watchdog.sh
         sudo echo "if [ \$?  -eq "0" ]; then" >>  /home/$user/hornet/watchdog.sh
         sudo echo "exit 0" >>  /home/$user/hornet/watchdog.sh
         sudo echo "else" >>  /home/$user/hornet/watchdog.sh
