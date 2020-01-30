@@ -216,6 +216,7 @@ if [ "$selector" = "7" ]; then
     if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
         echo -e $TEXT_YELLOW && echo "Enable hornet watchdog..." && echo -e $TEXT_RESET
         sudo -u $user touch /home/$user/hornet/watchdog.sh
+        sudo chmod +x /home/$user/hornet/watchdog.sh
         sudo echo "#!/bin/bash" > /home/$user/hornet/watchdog.sh
         sudo echo "ps -ef | grep abc | grep -v grep > /dev/null" >>  /home/$user/hornet/watchdog.sh
         sudo echo "if [ $?  -eq "0" ]; then" >>  /home/$user/hornet/watchdog.sh
