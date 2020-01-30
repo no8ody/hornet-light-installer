@@ -215,17 +215,18 @@ if [ "$selector" = "7" ]; then
     echo -e $TEXT_RESET
     if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
         echo -e $TEXT_YELLOW && echo "Enable hornet watchdog..." && echo -e $TEXT_RESET
-        sudo -u $iota echo "#!/bin/bash" > /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "ps -ef | grep abc | grep -v grep > /dev/null" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "if [ $?  -eq "0" ]; then" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "exit 0" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "else" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "sudo systemctl stop hornet" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "rm -r /home/$user/hornet/mainnetdb" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "sudo systemctl start hornet" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "fi" >>  /home/$user/hornet/watchdog.sh
-        sudo -u $iota echo "exit 0" >>  /home/$user/hornet/watchdog.sh
+        sudo -u $user touch /home/$user/hornet/watchdog.sh
+        sudo echo "#!/bin/bash" > /home/$user/hornet/watchdog.sh
+        sudo echo "ps -ef | grep abc | grep -v grep > /dev/null" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "if [ $?  -eq "0" ]; then" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "exit 0" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "else" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "sudo systemctl stop hornet" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "rm -r /home/$user/hornet/mainnetdb" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "sudo systemctl start hornet" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "fi" >>  /home/$user/hornet/watchdog.sh
+        sudo echo "exit 0" >>  /home/$user/hornet/watchdog.sh
         sudo echo '*/15 * * * * iota bash /home/'$user'/hornet/watchdog.sh' | sudo tee /etc/cron.d/hornet_watchdog > /dev/null
     fi
     if [ "$selector7" = "d" ] || [ "$selector7" = "D" ]; then
