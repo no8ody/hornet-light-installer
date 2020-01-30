@@ -197,7 +197,7 @@ fi
 
 if [ "$selector" = "6" ]; then
     sudo systemctl stop hornet
-    sudo rm -r /home/$user/hornet/mainnetdb/*
+    sudo rm -r /home/$user/hornet/mainnetdb/
     echo -e $TEXT_RED_B && read -p "Would you like to download the latest snapshot (y/N): " selector6
     echo -e $TEXT_RESET
     if [ "$selector6" = "y" ] || [ "$selector6" = "Y" ]; then
