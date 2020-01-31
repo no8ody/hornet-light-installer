@@ -58,11 +58,21 @@ clear
 source config.sh
 nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
 
+sudo crontab -l | grep -q '/root/watchdog'  && watchdog=active || watchdog=inactive
+if [ -f "/root/watchdog.log" ]; then
+	watchdoglog="$(cat /root/watchdog.log)"
+fi
 
 echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
 echo -e $TEXT_RED_B
 echo Current Hornet: $nodev
 echo Latest Hornet: \"$latesthornet\"
+echo -e $TEXT_RESET
+echo -e $TEXT_RED_B
+echo Watchdog: $watchdog
+if [ "$watchdog" = "active" ]; then
+echo Resets: $watchdoglog
+fi
 echo -e $TEXT_RESET
 
 echo -e $TEXT_YELLOW
@@ -212,15 +222,20 @@ if [ "$selector" = "7" ]; then
     cronjob="*/15 * * * * $croncmd"
     if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
         echo -e $TEXT_YELLOW && echo "Enable hornet watchdog..." && echo -e $TEXT_RESET
+	sudo echo "0" > /root/watchdog.log
         sudo echo "#!/bin/bash" > /root/watchdog
-        sudo echo "check=\"\$(systemctl show -p ActiveState --value hornet)\"" >>  /root/watchdog
-        sudo echo "if [ \"\$check\" != \"active\" ]; then" >>  /root/watchdog
+        sudo echo "check=\"\$(systemctl show -p ActiveState --value hornet)\"" >> /root/watchdog
+        sudo echo "if [ \"\$check\" != \"active\" ]; then" >> /root/watchdog
         sudo echo "sudo systemctl stop hornet" >>  /root/watchdog
-        sudo echo "sudo rm -r /home/iota/hornet/mainnetdb" >>  /root/watchdog
-        sudo echo "sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /root/watchdog
-        sudo echo "sudo systemctl restart hornet" >>  /root/watchdog
-        sudo echo "fi" >>  /root/watchdog
-        sudo echo "exit 0" >>  /root/watchdog
+        sudo echo "sudo rm -r /home/iota/hornet/mainnetdb" >> /root/watchdog
+        sudo echo "sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >> /root/watchdog
+        sudo echo "sudo systemctl restart hornet" >> /root/watchdog
+	sudo echo "counter=\"\$(cat /root/watchdog.log)\"" >> /root/watchdog
+	sudo echo "let counter=counter+1" >> /root/watchdog
+	sudo echo "echo \$counter > /root/watchdog.log" >> /root/watchdog
+	sudo echo "counter=0" >> /root/watchdog
+	sudo echo "fi" >>  /root/watchdog
+        sudo echo "exit 0" >> /root/watchdog
         sudo chmod 700 /root/watchdog
         ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
     fi
