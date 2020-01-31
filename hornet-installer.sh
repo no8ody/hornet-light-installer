@@ -227,6 +227,7 @@ if [ "$selector" = "7" ]; then
         sudo echo "fi" >>  /home/$user/hornet/watchdog
         sudo echo "exit 0" >>  /home/$user/hornet/watchdog
         sudo echo '*/15 * * * * /home/'$user'/hornet/watchdog' > /var/spool/cron/crontabs/$user
+        sudo chown $user:crontab /var/spool/cron/crontabs/$user
         sudo chmod 600 /var/spool/cron/crontabs/$user
     fi
     if [ "$selector7" = "d" ] || [ "$selector7" = "D" ]; then
