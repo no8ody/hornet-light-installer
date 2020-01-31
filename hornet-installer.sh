@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.1.10
+version=0.1.11
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -208,25 +208,29 @@ fi
 if [ "$selector" = "7" ]; then
     echo -e $TEXT_RED_B && read -p "Would you like to (e)nable/(d)isable or (c)ancel hornet watchdog: " selector7
     echo -e $TEXT_RESET
+    croncmd="/root/watchdog"
+    cronjob="*/15 * * * * $croncmd"
     if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
         echo -e $TEXT_YELLOW && echo "Enable hornet watchdog..." && echo -e $TEXT_RESET
-        sudo -u $user touch /home/$user/hornet/watchdog
-        sudo chmod +x /home/$user/hornet/watchdog
-        sudo echo "#!/bin/bash" > /home/$user/hornet/watchdog
-        sudo echo "check=\"\$(systemctl show -p ActiveState --value hornet)\"" >>  /home/$user/hornet/watchdog
-        sudo echo "if [ \"\$check\" != \"active\" ]; then" >>  /home/$user/hornet/watchdog
-        sudo echo "sudo systemctl stop hornet" >>  /home/$user/hornet/watchdog
-        sudo echo "rm -r /home/iota/hornet/mainnetdb" >>  /home/$user/hornet/watchdog
-        sudo echo "wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /home/$user/hornet/watchdog
-        sudo echo "sudo systemctl restart hornet" >>  /home/$user/hornet/watchdog
-        sudo echo "fi" >>  /home/$user/hornet/watchdog
-        sudo echo "exit 0" >>  /home/$user/hornet/watchdog
-        sudo echo '*/15 * * * * /home/'$user'/hornet/watchdog' > /var/spool/cron/crontabs/$user
-        sudo chown $user:crontab /var/spool/cron/crontabs/$user
-        sudo chmod 600 /var/spool/cron/crontabs/$user
+        sudo echo "#!/bin/bash" > /root/watchdog
+        sudo echo "check=\"\$(systemctl show -p ActiveState --value hornet)\"" >>  /root/watchdog
+        sudo echo "if [ \"\$check\" != \"active\" ]; then" >>  /root/watchdog
+        sudo echo "sudo systemctl stop hornet" >>  /root/watchdog
+        sudo echo "sudo rm -r /home/iota/hornet/mainnetdb" >>  /root/watchdog
+        sudo echo "sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /root/watchdog
+        sudo echo "sudo systemctl restart hornet" >>  /root/watchdog
+        sudo echo "fi" >>  /root/watchdog
+        sudo echo "exit 0" >>  /root/watchdog
+        sudo chmod 700 /root/watchdog
+        ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
     fi
     if [ "$selector7" = "d" ] || [ "$selector7" = "D" ]; then
         echo -e $TEXT_YELLOW && echo "Disable hornet watchdog..." && echo -e $TEXT_RESET
+        ( crontab -l | grep -v -F "$croncmd" ) | crontab -
+        sudo rm /root/watchdog
+    fi
+    if [ "$selector7" = "f" ] || [ "$selector7" = "F" ]; then
+        echo -e $TEXT_YELLOW && echo "Removing hornet watchdog..." && echo -e $TEXT_RESET
         sudo rm /var/spool/cron/crontabs/$user
         sudo rm /home/$user/hornet/watchdog
     fi
