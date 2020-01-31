@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.1.11
+version=0.1.12
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -65,15 +65,16 @@ fi
 
 echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
 echo -e $TEXT_RED_B
-echo Current Hornet: $nodev
-echo Latest Hornet: \"$latesthornet\"
-echo -e $TEXT_RESET
-echo -e $TEXT_RED_B
+echo Hornet: $nodev \| Release: \"$latesthornet\"
+echo ""
+if [ "$watchdog" != "active" ]; then
 echo Watchdog: $watchdog
-if [ "$watchdog" = "active" ]; then
-echo Resets: $watchdoglog
+else
+echo Watchdog: $watchdog \| Resets: $watchdoglog
 fi
 echo -e $TEXT_RESET
+
+echo -e "\e[90m==========================================================="
 
 echo -e $TEXT_YELLOW
 echo "Hornet Manager"
@@ -104,7 +105,7 @@ echo ""
 echo ""
 echo "x) Exit"
 echo -e $TEXT_RESET
-echo -e $TEXT_YELLOW && echo "===========================================================" && echo -e $TEXT_RESET
+echo -e "\e[90m==========================================================="
 echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
 echo -e $TEXT_RESET
 
