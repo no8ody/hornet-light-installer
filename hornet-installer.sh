@@ -41,11 +41,6 @@ if [ "$version" != "$latesthli" ]; then
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
     sudo chmod +x hornet-installer.sh
     echo -e $TEXT_YELLOW && echo "Backup current HLI config..." && echo -e $TEXT_RESET
-    mv config.sh config.sh.bak
-    sleep 2
-    sudo wget -q -O config.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/config.sh
-    sudo nano config.sh
-    sleep 2
     ScriptLoc=$(readlink -f "$0")
     exec "$ScriptLoc"
     exit 0
