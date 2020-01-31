@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.1.8
+version=0.1.9
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -232,6 +232,7 @@ if [ "$selector" = "7" ]; then
     if [ "$selector7" = "d" ] || [ "$selector7" = "D" ]; then
         echo -e $TEXT_YELLOW && echo "Disable hornet watchdog..." && echo -e $TEXT_RESET
         sudo rm /var/spool/cron/crontabs/$user
+        sudo rm /home/$user/hornet/watchdog
     fi
     echo -e $TEXT_YELLOW && echo "Hornet watchdog configuration finished!" && echo -e $TEXT_RESET
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
