@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.1.9
+version=0.1.10
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -213,8 +213,8 @@ if [ "$selector" = "7" ]; then
         sudo -u $user touch /home/$user/hornet/watchdog
         sudo chmod +x /home/$user/hornet/watchdog
         sudo echo "#!/bin/bash" > /home/$user/hornet/watchdog
-        sudo echo "check=\"$(systemctl show -p ActiveState --value hornet)\"" >>  /home/$user/hornet/watchdog
-        sudo echo "if [ \"$check\" != \"running\" ]; then" >>  /home/$user/hornet/watchdog
+        sudo echo "check=\"\$(systemctl show -p ActiveState --value hornet)\"" >>  /home/$user/hornet/watchdog
+        sudo echo "if [ \"\$check\" != \"active\" ]; then" >>  /home/$user/hornet/watchdog
         sudo echo "sudo systemctl stop hornet" >>  /home/$user/hornet/watchdog
         sudo echo "rm -r /home/iota/hornet/mainnetdb" >>  /home/$user/hornet/watchdog
         sudo echo "wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /home/$user/hornet/watchdog
