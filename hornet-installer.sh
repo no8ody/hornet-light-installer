@@ -215,24 +215,23 @@ if [ "$selector" = "7" ]; then
     echo -e $TEXT_RESET
     if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
         echo -e $TEXT_YELLOW && echo "Enable hornet watchdog..." && echo -e $TEXT_RESET
-        sudo -u $user touch /home/$user/hornet/watchdog.sh
-        sudo chmod +x /home/$user/hornet/watchdog.sh
-        sudo echo "#!/bin/bash" > /home/$user/hornet/watchdog.sh
-        sudo echo "ps -ef | grep hornet | grep -v grep > /dev/null" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "if [ \$?  -eq "0" ]; then" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "exit 0" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "else" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "sudo systemctl stop hornet" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "rm -r /home/$user/hornet/mainnetdb" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "sudo systemctl start hornet" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "fi" >>  /home/$user/hornet/watchdog.sh
-        sudo echo "exit 0" >>  /home/$user/hornet/watchdog.sh
-        sudo echo '*/15 * * * * iota bash /home/'$user'/hornet/watchdog.sh' | sudo tee /etc/cron.d/hornet_watchdog > /dev/null
+        sudo -u $user touch /home/$user/hornet/watchdog
+        sudo chmod +x /home/$user/hornet/watchdog
+        sudo echo "#!/bin/bash" > /home/$user/hornet/watchdog
+        sudo echo "check=\"$(systemctl show -p ActiveState --value hornet)\"" >>  /home/$user/hornet/watchdog
+        sudo echo "if [ \"$check\" != \"running\" ]; then" >>  /home/$user/hornet/watchdog
+        sudo echo "sudo systemctl stop hornet" >>  /home/$user/hornet/watchdog
+        sudo echo "rm -r /home/iota/hornet/mainnetdb" >>  /home/$user/hornet/watchdog
+        sudo echo "wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >>  /home/$user/hornet/watchdog
+        sudo echo "sudo systemctl restart hornet" >>  /home/$user/hornet/watchdog
+        sudo echo "fi" >>  /home/$user/hornet/watchdog
+        sudo echo "exit 0" >>  /home/$user/hornet/watchdog
+        sudo echo '*/15 * * * * /home/'$user'/hornet/watchdog' > /var/spool/cron/crontabs/$user
+        sudo chmod 600 /var/spool/cron/crontabs/$user
     fi
     if [ "$selector7" = "d" ] || [ "$selector7" = "D" ]; then
         echo -e $TEXT_YELLOW && echo "Disable hornet watchdog..." && echo -e $TEXT_RESET
-        sudo rm /etc/cron.d/hornet_watchdog
+        sudo rm /var/spool/cron/crontabs/$user
     fi
     echo -e $TEXT_YELLOW && echo "Hornet watchdog configuration finished!" && echo -e $TEXT_RESET
     echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
