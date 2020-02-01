@@ -223,7 +223,7 @@ if [ "$selector" = "7" ]; then
     cronjob="*/15 * * * * $croncmd"
     if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
         echo -e $TEXT_YELLOW && echo "Enable hornet watchdog..." && echo -e $TEXT_RESET
-	sudo echo "0" > /root/watchdog.log
+	    sudo echo "0" > /root/watchdog.log
         sudo echo "#!/bin/bash" > /root/watchdog
         sudo echo "check=\"\$(systemctl show -p ActiveState --value hornet)\"" >> /root/watchdog
         sudo echo "if [ \"\$check\" != \"active\" ]; then" >> /root/watchdog
