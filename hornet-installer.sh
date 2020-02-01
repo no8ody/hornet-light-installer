@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.1.12
+version=0.1.13
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -364,6 +364,8 @@ if [ "$selector" = "12" ]; then
 
     if [ -f "/etc/letsencrypt/live/$domain/fullchain.pem" ]; then
         sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/\#RjtV27dw/''/g' {} \;
+        sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/ssl_certificate /etc/letsencrypt/live/'$domain'/fullchain.pem; \# managed by Certbot/''/g' {} \;
+        sudo find /etc/nginx/sites-available/default -type f -exec sed -i 's/ssl_certificate_key /etc/letsencrypt/live/'$domain'/privkey.pem; \# managed by Certbot/''/g' {} \;
         sudo systemctl restart nginx
     fi
     echo -e $TEXT_YELLOW && echo "Reverse proxy installation finished!" && echo -e $TEXT_RESET
