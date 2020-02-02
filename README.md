@@ -5,7 +5,7 @@
 
 **Download the latest release version of the script and run it. Do the following steps:**
 
-1. First you should create a folder for the script and config `sudo mkdir hornet-installer && cd hornet-installer`
+1. First you should create a folder for the script and config `sudo mkdir ~/hornet-installer && cd ~/hornet-installer`
 2. `sudo wget -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh`
 3. `sudo chmod +x hornet-installer.sh`
 5. Run the installer: `sudo ./hornet-installer.sh`
