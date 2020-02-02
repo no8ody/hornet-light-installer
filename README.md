@@ -19,7 +19,7 @@
 
 1. `sudo nano config.sh` and set your domain
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the option "11"
+3. Choose the option "12"
 4. Enter your e-mail address for notifications from LetsEncrypt
 5. Agree the terms with `A`
 6. Choose `N` next
@@ -36,20 +36,20 @@
 **To add your node to the dock please follow these steps:**
 1. `sudo nano config.sh` and set your node name and pow option
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the option "7"
+3. Choose the option "8"
 4. You get now a password! Please copy the password and save it in the config.sh (and also write it down!).
 5. You're done, welcome to the dock party!
 
 **To remove your node from the dock please follow these steps:**
 1. `sudo nano config.sh` and set your password
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the "d" option
+3. Choose the "9" option
 4. If your node details shows up, your node was successfully removed.
 5. Thank you very much for your participation in the dock!
 
 **To udpdate your node on the dock please follow these steps:**
 1. `sudo nano config.sh` and set your donation address and make sure you have your password set
 2. `sudo ./hornet-installer.sh` and run the script
-3. Choose the option "9"
+3. Choose the option "10"
 4. If your node details shows up, your node was successfully updated.
 5. Thank you very much for your participation in the dock!
