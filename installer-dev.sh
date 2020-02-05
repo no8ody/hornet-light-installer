@@ -69,7 +69,7 @@ while [ $counter -lt 1 ]; do
 
     echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
     echo -e $TEXT_RED_B
-    echo "Version: $nodev \| Release: \"$latesthornet\""
+    echo "Version: $nodev | Release: \"$latesthornet\""
     echo ""
     let lmi=$rlmi-$llmi
     if [ $lmi -gt 4 ]; then
@@ -79,9 +79,9 @@ while [ $counter -lt 1 ]; do
     fi
     echo ""
     if [ "$watchdog" != "active" ]; then
-        echo Watchdog: $watchdog
+        echo "Watchdog: $watchdog"
     else
-        echo Watchdog: $watchdog \| Restarts: $watchdoglog
+        echo "Watchdog: $watchdog | Restarts: $watchdoglog"
     fi
     echo -e $TEXT_RESET
 
