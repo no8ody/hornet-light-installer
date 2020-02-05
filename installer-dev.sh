@@ -68,26 +68,32 @@ while [ $counter -lt 1 ]; do
         watchdoglog="$(cat /root/watchdog.log)"
     fi
 
+    bold='\e[1m'
+    boldnormal='\e[21m'
+    yellow='\e[33m'
+    green='\e[32m'
+    red='\e[31m'
+
     ############################################################################################################################################################
 
     echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
-    echo "\e[1m\e[33mVersion: \e[21m$nodev"
-    echo "\e[1m\e[33mRelease: \e[21m\"$latesthornet\""
+    echo "$bold$yellowVersion: $boldnormal$nodev"
+    echo "$bold$yellowRelease: \e[21m\"$latesthornet\""
     echo ""
     let lmi=$rlmi-$llmi
     if [ $lmi -gt 4 ]; then
-        echo -e "\e[1m\e[33mStatus: \e[21m\e[31mnot synced"
-        echo -e "\e[1m\e[33mDelay: \e[21m\e[31m$lmi \e[33mmilestone(s)"
+        echo -e "$bold$yellowStatus:$boldnormal$red not synced"
+        echo -e "$bold$yellowDelay: $boldnormal$red$lmi$yellow milestone(s)"
     else
-        echo -e "\e[1m\e[33mStatus: \e[21m\e[32msynced"
-        echo -e "\e[1m\e[33mDelay: \e[21m\e[32m$lmi \e[33mmilestone(s)"
+        echo -e "$bold$yellowStatus:$boldnormal$green synced"
+        echo -e "$bold$yellowDelay: $boldnormal$lmi milestone(s)"
     fi
     echo ""
     if [ "$watchdog" != "active" ]; then
-        echo -e "\e[1m\e[33mWatchdog: \e[21m\e[31m$watchdog"
+        echo -e "$bold$yellowWatchdog: $boldnormal$red$watchdog"
     else
-        echo -e "\e[1m\e[33mWatchdog: \e[21m\e[32m$watchdog"
-        echo -e "\e[1m\e[33mRestarts: \e[21m\e[31m$watchdoglog"
+        echo -e "$bold$yellowWatchdog: $boldnormal$green$watchdog"
+        echo -e "$bold$yellowRestarts: $boldnormal$red$watchdoglog"
     fi
     echo ""
 
