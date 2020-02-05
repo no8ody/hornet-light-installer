@@ -69,15 +69,13 @@ while [ $counter -lt 1 ]; do
 
     echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
     echo -e $TEXT_RED_B
-    echo "Node details"
-    echo ""
     echo "Version: $nodev \| Release: \"$latesthornet\""
     echo ""
     let lmi=$rlmi-$llmi
     if [ $lmi -gt 4 ]; then
-        echo "Status: not synced \| Delay: $lmi milestone(s)"
+        echo "Status: not synced | Delay: $lmi milestone(s)"
     else
-        echo "Status: synced \| Delay: $lmi milestone(s)"
+        echo "Status: synced | Delay: $lmi milestone(s)"
     fi
     echo ""
     if [ "$watchdog" != "active" ]; then
@@ -267,7 +265,7 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_RESET
             fi
             if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
-                let counter2=counter2+1
+                let counter1=$counter1+1
             fi
         done
     fi
@@ -309,8 +307,8 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_RESET
             fi
             if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
-                let counter1=counter1+1
-            fi    
+                let counter2=$counter2+1
+            fi
         done
     fi
 
@@ -445,13 +443,13 @@ while [ $counter -lt 1 ]; do
             fi
 
             if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
-                let counter3=counter3+1
+                let counter3=$counter3+1
             fi
         done
     fi
 
     if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
-        let counter=counter+1
+        let counter=$counter+1
     fi
 done
 clear
