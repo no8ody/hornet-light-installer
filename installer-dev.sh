@@ -265,9 +265,10 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_RESET
             fi
             if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
-                let counter1=$counter1+1
+                let counter1=1
             fi
         done
+        counter1=0
     fi
 
     ############################################################################################################################################################
@@ -307,9 +308,10 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_RESET
             fi
             if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
-                let counter2=$counter2+1
+                let counter2=1
             fi
         done
+        counter2=0
     fi
 
     if [ "$selector" = "3" ]; then
@@ -443,14 +445,16 @@ while [ $counter -lt 1 ]; do
             fi
 
             if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
-                let counter3=$counter3+1
+                counter3=1
             fi
         done
+        counter3=0
     fi
 
     if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
-        let counter=$counter+1
+        counter=1
     fi
 done
+counter=0
 clear
 exit 0
