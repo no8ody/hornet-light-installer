@@ -69,7 +69,7 @@ while [ $counter -lt 1 ]; do
 
     echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
     echo -e $TEXT_RED_B
-    echo "Version: $nodev \| Release: \"$latesthornet\""
+    echo "Version: $nodev | Release: \"$latesthornet\""
     echo ""
     let lmi=$rlmi-$llmi
     if [ $lmi -gt 4 ]; then
