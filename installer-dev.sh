@@ -207,6 +207,7 @@ while [ $counter -lt 1 ]; do
                     sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
                     sudo nano /home/$user/hornet/neighbors.json
                 fi
+                sudo systemctl start hornet
                 echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
                 echo -e $TEXT_RESET
             fi
