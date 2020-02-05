@@ -59,7 +59,7 @@ counter=0
 while [ $counter -lt 1 ]; do
     clear
     source config.sh
-    nnodetempv="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
+    nodetempv="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
     rlmi="$(curl -s https://nodes.tanglebay.org -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.latestMilestoneIndex')"
     llmi="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.latestSolidSubtangleMilestoneIndex')"
 
@@ -89,7 +89,7 @@ while [ $counter -lt 1 ]; do
         echo -e "$yellow Delay: $red$lmi$yellow milestone(s)"
     else
         echo -e "$yellow Status:$green synced"
-        echo -e "$yellow Delay: $lmi $yellow milestone(s)"
+        echo -e "$yellow Delay: $lmi$yellow milestone(s)"
     fi
     echo ""
     if [ "$watchdog" != "active" ]; then
@@ -101,17 +101,18 @@ while [ $counter -lt 1 ]; do
     echo ""
 
     echo -e "\e[90m==========================================================="
-
-    echo -e $TEXT_YELLOW
+    echo -e $red "HLI Management"
+    echo -e $yellow
     echo "1) Hornet Manager"
     echo ""
     echo "2) Tangle Bay Manager"
     echo ""
     echo "3) Install Manager"
     echo ""
+    echo -e "\e[90m-----------------------------------------------------------"
     echo ""
-    echo "x) Exit"
-    echo -e $TEXT_RESET
+    echo -e $yellow "x) Exit"
+    echo ""
     echo -e "\e[90m==========================================================="
     echo -e $TEXT_YELLOW && read -t 30 -p "Please type in your option: " selector
     echo -e $TEXT_RESET
