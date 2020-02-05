@@ -116,7 +116,7 @@ while [ $counter -lt 1 ]; do
             echo "6) Delete mainnet database"
             echo "7) Manage watchdog"
             echo ""
-            echo "x) Back"
+            echo "b) Back"
             echo -e $TEXT_RESET
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
@@ -264,7 +264,7 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
                 echo -e $TEXT_RESET
             fi
-            if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
+            if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
                 counter1=1
             fi
         done
@@ -284,7 +284,7 @@ while [ $counter -lt 1 ]; do
             echo "2) Remove your node from Tangle Bay"
             echo "3) Update node on Tangle Bay"
             echo ""
-            echo "x) Back"
+            echo "b) Back"
             echo -e $TEXT_RESET
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
@@ -307,7 +307,7 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
                 echo -e $TEXT_RESET
             fi
-            if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
+            if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
                 counter2=1
             fi
         done
@@ -326,7 +326,7 @@ while [ $counter -lt 1 ]; do
             echo "3) Download latest HLI config"
             echo "4) Edit HLI config"
             echo ""
-            echo "x) Back"
+            echo "b) Back"
             echo -e $TEXT_RESET
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
@@ -444,7 +444,7 @@ while [ $counter -lt 1 ]; do
                 sudo nano config.sh
             fi
 
-            if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
+            if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
                 counter3=1
             fi
         done
