@@ -77,8 +77,9 @@ while [ $counter -lt 1 ]; do
 
     echo ""
     echo -e $yellow "\033[1m\033[4mWelcome to the (HLI) Hornet lightweight installer! [v$version]\033[0m"
+    echo ""
     if [ "$nodev" == "$latesthornet" ]; then
-        echo -e "$yellow Release: $nodev"
+        echo -e "$yellow Release:$green $nodev"
     else
         echo -e "$yellow Release:$red $nodev"
     fi
@@ -123,6 +124,7 @@ while [ $counter -lt 1 ]; do
         counter1=0
         while [ $counter1 -lt 1 ]; do
             clear
+            echo ""
             echo -e $red "\033[1m\033[4mHornet Manager\033[0m"
             echo -e $yellow ""
             echo " 1) Control hornet (start/stop)"
@@ -297,6 +299,7 @@ while [ $counter -lt 1 ]; do
         counter2=0
         while [ $counter2 -lt 1 ]; do
             clear
+            echo ""
             echo -e $red "\033[1m\033[4mTangle Bay Manager\033[0m"
             echo -e $yellow ""
             echo " 1) Add your node to Tangle Bay"
@@ -305,7 +308,8 @@ while [ $counter -lt 1 ]; do
             echo ""
             echo -e "\e[90m-----------------------------------------------------------"
             echo ""
-            echo $yellow "x) Back"
+            echo -e $yellow "x) Back"
+            echo ""
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p " Please type in your option: " selector
             echo -e $TEXT_RESET
@@ -338,6 +342,7 @@ while [ $counter -lt 1 ]; do
         counter3=0
         while [ $counter3 -lt 1 ]; do
             clear
+            echo ""
             echo -e $red "\033[1m\033[4mInstaller Manager\033[0m"
             echo -e $yellow ""
             echo " 1) Install hornet node"
@@ -348,6 +353,7 @@ while [ $counter -lt 1 ]; do
             echo -e "\e[90m-----------------------------------------------------------"
             echo ""
             echo -e $yellow "x) Back"
+            echo ""
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p " Please type in your option: " selector
             echo -e $TEXT_RESET
