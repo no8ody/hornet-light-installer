@@ -60,6 +60,9 @@ while [ $counter -lt 1 ]; do
     rlmi="$(curl -s https://nodes.tanglebay.org -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.latestMilestoneIndex')"
     llmi="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.latestSolidSubtangleMilestoneIndex')"
 
+    let rlmi=rlmi+0
+    let llmi=llmi+0
+
     sudo crontab -l | grep -q '/root/watchdog'  && watchdog=active || watchdog=inactive
     if [ -f "/root/watchdog.log" ]; then
         watchdoglog="$(cat /root/watchdog.log)"
@@ -68,22 +71,25 @@ while [ $counter -lt 1 ]; do
     ############################################################################################################################################################
 
     echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
-    echo -e $TEXT_RED_B
-    echo "Version: $nodev | Release: \"$latesthornet\""
+    echo "\e[1m\e[33mVersion: \e[21m$nodev"
+    echo "\e[1m\e[33mRelease: \e[21m\"$latesthornet\""
     echo ""
     let lmi=$rlmi-$llmi
     if [ $lmi -gt 4 ]; then
-        echo "Status: not synced | Delay: $lmi milestone(s)"
+        echo -e "\e[1m\e[33mStatus: \e[21m\e[31mnot synced"
+        echo -e "\e[1m\e[33mDelay: \e[21m\e[31m$lmi \e[33mmilestone(s)"
     else
-        echo "Status: synced | Delay: $lmi milestone(s)"
+        echo -e "\e[1m\e[33mStatus: \e[21m\e[32msynced"
+        echo -e "\e[1m\e[33mDelay: \e[21m\e[32m$lmi \e[33mmilestone(s)"
     fi
     echo ""
     if [ "$watchdog" != "active" ]; then
-        echo "Watchdog: $watchdog"
+        echo -e "\e[1m\e[33mWatchdog: \e[21m\e[31m$watchdog"
     else
-        echo "Watchdog: $watchdog | Restarts: $watchdoglog"
+        echo -e "\e[1m\e[33mWatchdog: \e[21m\e[32m$watchdog"
+        echo -e "\e[1m\e[33mRestarts: \e[21m\e[31m$watchdoglog"
     fi
-    echo -e $TEXT_RESET
+    echo ""
 
     echo -e "\e[90m==========================================================="
 
