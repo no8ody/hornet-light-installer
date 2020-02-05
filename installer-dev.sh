@@ -77,26 +77,26 @@ while [ $counter -lt 1 ]; do
 
     echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
     echo -e "$yellow Version: $nodev"
-    if [ "$nodev" != "$latesthornet" ]; then
-        echo -e "$yellow Release: $latesthornet
+    if [ "$nodev" == "$latesthornet" ]; then
+        echo -e "$yellow Release: $latesthornet"
     else
-        echo -e "$yellow Release: $red $latesthornet
+        echo -e "$yellow Release:$red $latesthornet"
     fi
     echo ""
     let lmi=$rlmi-$llmi
     if [ $lmi -gt 4 ]; then
-        echo -e "$yellow Status: $red not synced"
-        echo -e "$yellow Delay: $red $lmi $yellow milestone(s)"
+        echo -e "$yellow Status:$red not synced"
+        echo -e "$yellow Delay: $red$lmi$yellow milestone(s)"
     else
-        echo -e "$yellow Status: $green synced"
+        echo -e "$yellow Status:$green synced"
         echo -e "$yellow Delay: $lmi $yellow milestone(s)"
     fi
     echo ""
     if [ "$watchdog" != "active" ]; then
-        echo -e "$yellow Watchdog: $red $watchdog"
+        echo -e "$yellow Watchdog:$red $watchdog"
     else
-        echo -e "$yellow Watchdog: $green $watchdog"
-        echo -e "$yellow Restarts: $red $watchdoglog"
+        echo -e "$yellow Watchdog:$green $watchdog"
+        echo -e "$yellow Restarts:$red $watchdoglog"
     fi
     echo ""
 
@@ -131,7 +131,7 @@ while [ $counter -lt 1 ]; do
             echo "6) Delete mainnet database"
             echo "7) Manage watchdog"
             echo ""
-            echo "b) Back"
+            echo "x) Back"
             echo -e $TEXT_RESET
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
@@ -280,11 +280,11 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
                 echo -e $TEXT_RESET
             fi
-            if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
+            if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
                 counter1=1
             fi
         done
-        counter1=0
+        unset selector
     fi
 
     ############################################################################################################################################################
@@ -300,7 +300,7 @@ while [ $counter -lt 1 ]; do
             echo "2) Remove your node from Tangle Bay"
             echo "3) Update node on Tangle Bay"
             echo ""
-            echo "b) Back"
+            echo "x) Back"
             echo -e $TEXT_RESET
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
@@ -323,11 +323,11 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_RED_B && pause 'Press [Enter] key to continue...'
                 echo -e $TEXT_RESET
             fi
-            if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
+            if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
                 counter2=1
             fi
         done
-        counter2=0
+        unset selector
     fi
 
     if [ "$selector" = "3" ]; then
@@ -342,7 +342,7 @@ while [ $counter -lt 1 ]; do
             echo "3) Download latest HLI config"
             echo "4) Edit HLI config"
             echo ""
-            echo "b) Back"
+            echo "x) Back"
             echo -e $TEXT_RESET
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p "Please type in your option: " selector
@@ -460,11 +460,11 @@ while [ $counter -lt 1 ]; do
                 sudo nano config.sh
             fi
 
-            if [ "$selector" = "b" ] || [ "$selector" = "B" ]; then
+            if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
                 counter3=1
             fi
         done
-        counter3=0
+        unset selector
     fi
 
     if [ "$selector" = "x" ] || [ "$selector" = "X" ]; then
