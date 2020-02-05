@@ -10,6 +10,9 @@ version=0.1.14
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
 TEXT_RED_B='\e[1;31m'
+yellow='\e[33m'
+green='\e[32m'
+red='\e[31m'
 clear
 
 function pause(){
@@ -56,10 +59,12 @@ counter=0
 while [ $counter -lt 1 ]; do
     clear
     source config.sh
-    nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
+    nnodetempv="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
     rlmi="$(curl -s https://nodes.tanglebay.org -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.latestMilestoneIndex')"
     llmi="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.latestSolidSubtangleMilestoneIndex')"
 
+    nodev="${nodetempv%\"}"
+    nodev="${nodev#\"}"
     let rlmi=rlmi+0
     let llmi=llmi+0
 
@@ -68,32 +73,30 @@ while [ $counter -lt 1 ]; do
         watchdoglog="$(cat /root/watchdog.log)"
     fi
 
-    bold='\e[1m'
-    boldnormal='\e[21m'
-    yellow='\e[33m'
-    green='\e[32m'
-    red='\e[31m'
-
     ############################################################################################################################################################
 
     echo -e $TEXT_YELLOW && echo "Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
-    echo -e "$bold$yellowVersion: $boldnormal$nodev"
-    echo -e "$bold$yellowRelease: $boldnormal\"$latesthornet\""
+    echo -e "$yellow Version: $nodev"
+    if [ "$nodev" != "$latesthornet" ]; then
+        echo -e "$yellow Release: $latesthornet
+    else
+        echo -e "$yellow Release: $red $latesthornet
+    fi
     echo ""
     let lmi=$rlmi-$llmi
     if [ $lmi -gt 4 ]; then
-        echo -e "$bold$yellowStatus:$boldnormal$red not synced"
-        echo -e "$bold$yellowDelay: $boldnormal$red$lmi$yellow milestone(s)"
+        echo -e "$yellow Status: $red not synced"
+        echo -e "$yellow Delay: $red $lmi $yellow milestone(s)"
     else
-        echo -e "$bold$yellowStatus:$boldnormal$green synced"
-        echo -e "$bold$yellowDelay: $boldnormal$lmi milestone(s)"
+        echo -e "$yellow Status: $green synced"
+        echo -e "$yellow Delay: $lmi $yellow milestone(s)"
     fi
     echo ""
     if [ "$watchdog" != "active" ]; then
-        echo -e "$bold$yellowWatchdog: $boldnormal$red$watchdog"
+        echo -e "$yellow Watchdog: $red $watchdog"
     else
-        echo -e "$bold$yellowWatchdog: $boldnormal$green$watchdog"
-        echo -e "$bold$yellowRestarts: $boldnormal$red$watchdoglog"
+        echo -e "$yellow Watchdog: $green $watchdog"
+        echo -e "$yellow Restarts: $red $watchdoglog"
     fi
     echo ""
 
