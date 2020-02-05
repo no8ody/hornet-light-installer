@@ -75,7 +75,8 @@ while [ $counter -lt 1 ]; do
 
     ############################################################################################################################################################
 
-    echo -e $TEXT_YELLOW && echo " Welcome to the (HLI) Hornet lightweight installer! [v$version]" && echo -e $TEXT_RESET
+    echo ""
+    echo -e $yellow "\033[1m\033[4mWelcome to the (HLI) Hornet lightweight installer! [v$version]\033[0m"
     echo -e "$yellow Version: $nodev"
     if [ "$nodev" == "$latesthornet" ]; then
         echo -e "$yellow Release: $latesthornet"
@@ -102,7 +103,8 @@ while [ $counter -lt 1 ]; do
 
     echo -e "\e[90m==========================================================="
     echo ""
-    echo -e $red " HLI Management"
+    echo -e $red "\033[1m\033[4mHLI Management\033[0m"
+    echo ""
     echo -e $yellow
     echo " 1) Hornet Manager"
     echo ""
@@ -122,9 +124,8 @@ while [ $counter -lt 1 ]; do
         counter1=0
         while [ $counter1 -lt 1 ]; do
             clear
-            echo -e $TEXT_YELLOW
-            echo " Hornet Manager"
-            echo ""
+            echo -e $red "\033[1m\033[4mHornet Manager\033[0m"
+            echo -e $yellow ""
             echo " 1) Control hornet (start/stop)"
             echo " 2) Show last live log"
             echo " 3) Edit neighbors.json"
@@ -133,8 +134,10 @@ while [ $counter -lt 1 ]; do
             echo " 6) Delete mainnet database"
             echo " 7) Manage watchdog"
             echo ""
-            echo " x) Back"
-            echo -e $TEXT_RESET
+            echo -e "\e[90m-----------------------------------------------------------"
+            echo ""
+            echo -e $yellow "x) Back"
+            echo ""
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p " Please type in your option: " selector
             echo -e $TEXT_RESET
@@ -295,15 +298,15 @@ while [ $counter -lt 1 ]; do
         counter2=0
         while [ $counter2 -lt 1 ]; do
             clear
-            echo -e $TEXT_YELLOW
-            echo " Tangle Bay Manager"
-            echo ""
+            echo -e $red "\033[1m\033[4mTangle Bay Manager\033[0m"
+            echo -e $yellow ""
             echo " 1) Add your node to Tangle Bay"
             echo " 2) Remove your node from Tangle Bay"
             echo " 3) Update node on Tangle Bay"
             echo ""
-            echo " x) Back"
-            echo -e $TEXT_RESET
+            echo -e "\e[90m-----------------------------------------------------------"
+            echo ""
+            echo $yellow "x) Back"
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p " Please type in your option: " selector
             echo -e $TEXT_RESET
@@ -336,16 +339,16 @@ while [ $counter -lt 1 ]; do
         counter3=0
         while [ $counter3 -lt 1 ]; do
             clear
-            echo -e $TEXT_YELLOW
-            echo " Installer Manager"
-            echo ""
+            echo -e $red "\033[1m\033[4mInstaller Manager\033[0m"
+            echo -e $yellow ""
             echo " 1) Install hornet node"
             echo " 2) Install nginx reverse proxy"
             echo " 3) Download latest HLI config"
             echo " 4) Edit HLI config"
             echo ""
-            echo " x) Back"
-            echo -e $TEXT_RESET
+            echo -e "\e[90m-----------------------------------------------------------"
+            echo ""
+            echo -e $yellow "x) Back"
             echo -e "\e[90m==========================================================="
             echo -e $TEXT_YELLOW && read -p " Please type in your option: " selector
             echo -e $TEXT_RESET
