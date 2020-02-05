@@ -77,11 +77,10 @@ while [ $counter -lt 1 ]; do
 
     echo ""
     echo -e $yellow "\033[1m\033[4mWelcome to the (HLI) Hornet lightweight installer! [v$version]\033[0m"
-    echo -e "$yellow Version: $nodev"
     if [ "$nodev" == "$latesthornet" ]; then
-        echo -e "$yellow Release: $latesthornet"
+        echo -e "$yellow Release: $nodev"
     else
-        echo -e "$yellow Release:$red $latesthornet"
+        echo -e "$yellow Release:$red $nodev"
     fi
     echo ""
     let lmi=$rlmi-$llmi
