@@ -70,7 +70,8 @@ while [ $counter -lt 1 ]; do
 
     sudo crontab -l | grep -q '/root/watchdog'  && watchdog=active || watchdog=inactive
     if [ -f "/root/watchdog.log" ]; then
-        watchdoglog="$(cat /root/watchdog.log)"
+        watchdogcount="$(cat /root/watchdog.log | sed -n -e '1{p;q}')"
+        watchdogtime="$(cat /root/watchdog.log | sed -n -e '2{p;q}')"
     fi
 
     ############################################################################################################################################################
@@ -78,26 +79,37 @@ while [ $counter -lt 1 ]; do
     echo ""
     echo -e $yellow "\033[1m\033[4mWelcome to the (HLI) Hornet lightweight installer! [v$version]\033[0m"
     echo ""
-    if [ "$nodev" == "$latesthornet" ]; then
-        echo -e "$yellow Release:$green $nodev"
+    if [ -n "$nodev" ]; then
+        if [ "$nodev" == "$latesthornet" ]; then
+            echo -e "$yellow Version:$green $nodev"
+        else
+            echo -e "$yellow Version:$red $nodev"
+        fi
     else
-        echo -e "$yellow Release:$red $nodev"
+        echo -e "$yellow Version:$red N/A"
     fi
     echo ""
-    let lmi=$rlmi-$llmi
-    if [ $lmi -gt 4 ]; then
-        echo -e "$yellow Status:$red not synced"
-        echo -e "$yellow Delay: $red$lmi$yellow milestone(s)"
+    if [ -n "$nodev" ]; then
+        let lmi=$rlmi-$llmi
+        if [ $lmi -gt 4 ]; then
+            echo -e "$yellow Status:$red not synced"
+            echo -e "$yellow Delay: $red$lmi$yellow milestone(s)"
+        else
+            echo -e "$yellow Status:$green synced"
+            echo -e "$yellow Delay: $lmi$yellow milestone(s)"
+        fi
     else
-        echo -e "$yellow Status:$green synced"
-        echo -e "$yellow Delay: $lmi$yellow milestone(s)"
+        echo -e "$yellow Status:$red offline"
     fi
     echo ""
     if [ "$watchdog" != "active" ]; then
         echo -e "$yellow Watchdog:$red $watchdog"
     else
         echo -e "$yellow Watchdog:$green $watchdog"
-        echo -e "$yellow Restarts:$red $watchdoglog"
+        echo -e "$yellow Restarts:$red $watchdogcount"
+        if [ -n "$watchdogtime" ]; then
+            echo -e "$yellow Last restart: $watchdogtime"
+        fi
     fi
     echo ""
 
@@ -259,13 +271,15 @@ while [ $counter -lt 1 ]; do
                     sudo echo "#!/bin/bash" > /root/watchdog
                     sudo echo "check=\"\$(systemctl show -p ActiveState --value hornet)\"" >> /root/watchdog
                     sudo echo "if [ \"\$check\" != \"active\" ]; then" >> /root/watchdog
+                    sudo echo "dt=\`date '+%m/%d/%Y %H:%M:%S'\`" >> /root/watchdog
                     sudo echo "sudo systemctl stop hornet" >>  /root/watchdog
                     sudo echo "sudo rm -r /home/iota/hornet/mainnetdb" >> /root/watchdog
                     sudo echo "sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >> /root/watchdog
                     sudo echo "sudo systemctl restart hornet" >> /root/watchdog
-                    sudo echo "counter=\"\$(cat /root/watchdog.log)\"" >> /root/watchdog
+                    sudo echo "counter=\"\$(cat /root/watchdog.log | sed -n -e '1{p;q}')\"" >> /root/watchdog
                     sudo echo "let counter=counter+1" >> /root/watchdog
                     sudo echo "echo \$counter > /root/watchdog.log" >> /root/watchdog
+                    sudo echo "echo \$dt >> /root/watchdog.log" >> /root/watchdog
                     sudo echo "counter=0" >> /root/watchdog
                     sudo echo "fi" >>  /root/watchdog
                     sudo echo "exit 0" >> /root/watchdog
