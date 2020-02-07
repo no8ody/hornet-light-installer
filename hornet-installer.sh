@@ -5,7 +5,7 @@
 # DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!! DO NOT EDIT THE LINES BELOW !!!
 ############################################################################################################################################################
 ############################################################################################################################################################
-version=0.1.15
+version=0.1.16
 
 TEXT_RESET='\e[0m'
 TEXT_YELLOW='\e[0;33m'
@@ -192,13 +192,10 @@ while [ $counter -lt 1 ]; do
                     sudo sed -i 's/\"example3.neighbor.com:15600\"/\"'$neighbor3'\"/g' /home/$user/hornet/neighbors.json
                 fi
                 sudo nano /home/$user/hornet/neighbors.json
-                echo -e $TEXT_RED_B && read -p " Would you like to restart hornet now (y/N): " selector3
-                if [ "$selector3" = "y" ] || [ "$selector3" = "y" ]; then
-                    sudo systemctl restart hornet
-                    echo -e $TEXT_YELLOW && echo " Hornet node restarted!" && echo -e $TEXT_RESET
-                    echo -e $TEXT_RED_B && pause ' Press [Enter] key to continue...'
-                    echo -e $TEXT_RESET
-                fi
+                echo -e $TEXT_YELLOW && echo " Neighbors configuration changed!" && echo -e $TEXT_RESET
+                echo -e $TEXT_RED_B && pause ' Press [Enter] key to continue...'
+                echo -e $TEXT_RESET
+
             fi
 
             if [ "$selector" = "4" ] ; then
