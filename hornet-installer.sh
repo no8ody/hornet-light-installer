@@ -265,7 +265,7 @@ while [ $counter -lt 1 ]; do
                 if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
                     echo -e $TEXT_YELLOW && echo " Enable hornet watchdog..." && echo -e $TEXT_RESET
                     sudo echo "0" > /root/watchdog.log
-                    #sudo wget -q -O /root/watchdog.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/watchdog.sh
+                    sudo wget -q -O /root/watchdog.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/watchdog.sh
                     sudo chmod 700 /root/watchdog.sh
                     sudo sed -i 's/$user/\'$user'/g' /root/watchdog.sh
                     sudo sed -i 's/$os/\"'$os'/g' /root/watchdog.sh

@@ -1,7 +1,7 @@
 #!/bin/bash
 check="$(systemctl show -p ActiveState --value hornet)"
 
-if [ "$check" = "active" ]; then
+if [ "$check" == "active" ]; then
     latesthornet="$(curl -s https://api.github.com/repos/gohornet/hornet/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')"
     latesthornet="${latesthornet:1}"
     nodev="$(curl -s http://127.0.0.1:14265 -X POST -H 'Content-Type: application/json' -H 'X-IOTA-API-Version: 1' -d '{"command": "getNodeInfo"}' | jq '.appVersion')"
@@ -11,7 +11,7 @@ if [ "$check" = "active" ]; then
         sudo systemctl stop hornet
         sudo mv /home/$user/hornet/neighbors.json /home/$user/hornet/neighbors.json.bak
         sudo mv /home/$user/hornet/config.json /home/$user/hornet/config.json.bak
-        sudo wget -qO- https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_"$os".tar.gz | sudo tar -xzf - -C /home/$user/hornet
+        sudo wget -qO- https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_$os.tar.gz | sudo tar -xzf - -C /home/$user/hornet
         sudo mv /home/$user/hornet/neighbors.json.bak /home/$user/hornet/neighbors.json
         sudo mv /home/$user/hornet/config.json.bak /home/$user/hornet/config.json
         sudo chown -R $user:$user /home/$user/hornet
