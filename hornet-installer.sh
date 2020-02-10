@@ -267,8 +267,8 @@ while [ $counter -lt 1 ]; do
                     sudo echo "0" > /root/watchdog.log
                     sudo wget -q -O /root/watchdog.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/watchdog.sh
                     sudo chmod 700 /root/watchdog.sh
-                    sudo sed -i 's/$user/\'$user'/g' /root/watchdog.sh
-                    sudo sed -i 's/$os/\"'$os'/g' /root/watchdog.sh
+                    sudo sed -i 's/$user/'$user'/g' /root/watchdog.sh
+                    sudo sed -i 's/$os/'$os'/g' /root/watchdog.sh
                     ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
                 fi
                 if [ "$selector7" = "d" ] || [ "$selector7" = "D" ]; then
