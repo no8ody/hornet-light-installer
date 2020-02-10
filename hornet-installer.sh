@@ -260,38 +260,22 @@ while [ $counter -lt 1 ]; do
             if [ "$selector" = "7" ]; then
                 echo -e $TEXT_RED_B && read -p " Would you like to (e)nable/(d)isable or (c)ancel hornet watchdog: " selector7
                 echo -e $TEXT_RESET
-                croncmd="/root/watchdog"
+                croncmd="/root/watchdog.sh"
                 cronjob="*/15 * * * * $croncmd"
                 if [ "$selector7" = "e" ] || [ "$selector7" = "E" ]; then
                     echo -e $TEXT_YELLOW && echo " Enable hornet watchdog..." && echo -e $TEXT_RESET
                     sudo echo "0" > /root/watchdog.log
-                    sudo echo "#!/bin/bash" > /root/watchdog
-                    sudo echo "check=\"\$(systemctl show -p ActiveState --value hornet)\"" >> /root/watchdog
-                    sudo echo "if [ \"\$check\" != \"active\" ]; then" >> /root/watchdog
-                    sudo echo "dt=\`date '+%m/%d/%Y %H:%M:%S'\`" >> /root/watchdog
-                    sudo echo "sudo systemctl stop hornet" >>  /root/watchdog
-                    sudo echo "sudo rm -r /home/iota/hornet/mainnetdb" >> /root/watchdog
-                    sudo echo "sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot" >> /root/watchdog
-                    sudo echo "sudo systemctl restart hornet" >> /root/watchdog
-                    sudo echo "counter=\"\$(cat /root/watchdog.log | sed -n -e '1{p;q}')\"" >> /root/watchdog
-                    sudo echo "let counter=counter+1" >> /root/watchdog
-                    sudo echo "echo \$counter > /root/watchdog.log" >> /root/watchdog
-                    sudo echo "echo \$dt >> /root/watchdog.log" >> /root/watchdog
-                    sudo echo "counter=0" >> /root/watchdog
-                    sudo echo "fi" >>  /root/watchdog
-                    sudo echo "exit 0" >> /root/watchdog
-                    sudo chmod 700 /root/watchdog
+                    #sudo wget -q -O /root/watchdog.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/watchdog.sh
+                    sudo chmod 700 /root/watchdog.sh
+                    sudo sed -i 's/$user/\'$user'/g' /root/watchdog.sh
+                    sudo sed -i 's/$os/\"'$os'/g' /root/watchdog.sh
                     ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
                 fi
                 if [ "$selector7" = "d" ] || [ "$selector7" = "D" ]; then
                     echo -e $TEXT_YELLOW && echo " Disable hornet watchdog..." && echo -e $TEXT_RESET
                     ( crontab -l | grep -v -F "$croncmd" ) | crontab -
+                    ( crontab -l | grep -v -F "/root/watchdog" ) | crontab -
                     sudo rm /root/watchdog
-                fi
-                if [ "$selector7" = "f" ] || [ "$selector7" = "F" ]; then
-                    echo -e $TEXT_YELLOW && echo " Removing hornet watchdog..." && echo -e $TEXT_RESET
-                    sudo rm /var/spool/cron/crontabs/$user
-                    sudo rm /home/$user/hornet/watchdog
                 fi
                 echo -e $TEXT_YELLOW && echo " Hornet watchdog configuration finished!" && echo -e $TEXT_RESET
                 echo -e $TEXT_RED_B && pause ' Press [Enter] key to continue...'
