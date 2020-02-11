@@ -9,9 +9,9 @@ if [ "$check" = "active" ]; then
     version="${version#\"}"
     if [ "$version" != "$latesthornet" ]; then
         sudo systemctl stop hornet
-        sudo wget -qO- https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_$os.tar.gz | sudo tar -xzf - -C /home/$user/hornet
+        sudo -u $user wget -qO- https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_$os.tar.gz | sudo -u $user tar -xzf - -C /home/$user/hornet
         sudo mv /home/$user/hornet/HORNET-"$latesthornet"_Linux_$os/hornet /home/$user/hornet/
-        sudo chown -R $user:$user /home/$user/hornet/hornet
+        sudo rm -r /home/$user/hornet/HORNET-"$latesthornet"_Linux_$os
         sudo chmod 770 /home/$user/hornet/hornet
         sudo systemctl start hornet
     fi
