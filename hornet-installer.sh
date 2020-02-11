@@ -283,7 +283,7 @@ while [ $counter -lt 1 ]; do
                     echo -e $TEXT_YELLOW && echo " Disable hornet watchdog..." && echo -e $TEXT_RESET
                     ( crontab -l | grep -v -F "$croncmd" ) | crontab -
                     ( crontab -l | grep -v -F "/root/watchdog" ) | crontab -
-                    sudo rm /root/watchdog
+                    sudo rm -rf /root/watchdog
                 fi
                 echo -e $TEXT_YELLOW && echo " Hornet watchdog configuration finished!" && echo -e $TEXT_RESET
                 echo -e $TEXT_RED_B && pause ' Press [Enter] key to continue...'
