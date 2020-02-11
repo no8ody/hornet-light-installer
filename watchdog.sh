@@ -9,12 +9,9 @@ if [ "$check" = "active" ]; then
     version="${version#\"}"
     if [ "$version" != "$latesthornet" ]; then
         sudo systemctl stop hornet
-        sudo mv /home/$user/hornet/neighbors.json /home/$user/hornet/neighbors.json.bak
-        sudo mv /home/$user/hornet/config.json /home/$user/hornet/config.json.bak
         sudo wget -qO- https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_$os.tar.gz | sudo tar -xzf - -C /home/$user/hornet
-        sudo mv /home/$user/hornet/neighbors.json.bak /home/$user/hornet/neighbors.json
-        sudo mv /home/$user/hornet/config.json.bak /home/$user/hornet/config.json
-        sudo chown -R $user:$user /home/$user/hornet
+        sudo mv /home/$user/hornet/HORNET-"$latesthornet"_Linux_$os/hornet /home/$user/hornet/
+        sudo chown -R $user:$user /home/$user/hornet/hornet
         sudo chmod 770 /home/$user/hornet/hornet
         sudo systemctl start hornet
     fi
@@ -30,7 +27,7 @@ if [ "$check" != "active" ]; then
     counter="$(cat /root/watchdog.log | sed -n -e '1{p;q}')"
     let counter=counter+1
     {
-    echo $counterg
+    echo $counter
     echo $dt
     } > /root/watchdog.log
     counter=0
