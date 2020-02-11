@@ -39,6 +39,14 @@ latesthli="$(curl -s https://api.github.com/repos/TangleBay/hornet-light-install
 
 ############################################################################################################################################################
 
+if [ $(id -u) -ne 0 ]; then 
+    echo -e $TEXT_RED_B "Please run HLI with sudo or as root"
+    echo -e $TEXT_RED_B && pause ' Press [Enter] key to continue...'
+    echo -e $TEXT_RESET
+    exit 0
+fi
+
+
 if [ "$version" != "$latesthli" ]; then
     echo -e $TEXT_RED_B && echo " New version available (v$latesthli)! Downloading new version..." && echo -e $TEXT_RESET
     sudo wget -q -O hornet-installer.sh https://raw.githubusercontent.com/TangleBay/hornet-light-installer/master/hornet-installer.sh
@@ -226,7 +234,7 @@ while [ $counter -lt 1 ]; do
                 sudo sed -i 's/\"username\": "hornet"/\"username\": \"'$dashuser'\"/g' /home/$user/hornet/config.json
                 sudo sed -i 's/\"password\": "hornet"/\"password\": \"'$dashpw'\"/g' /home/$user/hornet/config.json
                 sudo sed -i 's/\"port\": 15600/\"port\": '$nbport'/g' /home/$user/hornet/config.json
-                sudo rm -r /home/$user/hornet/HORNET-"$latesthornet"_Linux_"$os"*
+                sudo rm -rf /home/$user/hornet/HORNET-"$latesthornet"_Linux_"$os"*
                 sudo chown -R $user:$user /home/$user/hornet/
                 sudo chmod 770 /home/$user/hornet/hornet
                 if [ ! -f "/home/$user/hornet/neighbors.json" ]; then
@@ -244,7 +252,7 @@ while [ $counter -lt 1 ]; do
 
             if [ "$selector" = "6" ]; then
                 sudo systemctl stop hornet
-                sudo rm -r /home/$user/hornet/mainnetdb/
+                sudo rm -rf /home/$user/hornet/mainnetdb/
                 echo -e $TEXT_RED_B && read -p " Would you like to download the latest snapshot (y/N): " selector6
                 echo -e $TEXT_RESET
                 if [ "$selector6" = "y" ] || [ "$selector6" = "Y" ]; then
@@ -367,7 +375,7 @@ while [ $counter -lt 1 ]; do
                 echo -e $TEXT_YELLOW && echo " Downloading hornet files..." && echo -e $TEXT_RESET
                 sudo wget -qO- https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_"$os".tar.gz | sudo tar -xzf - -C /home/$user/hornet
                 sudo mv /home/$user/hornet/HORNET-"$latesthornet"_Linux_"$os"/* /home/$user/hornet/
-                sudo rm -r /home/$user/hornet/HORNET-"$latesthornet"_Linux_"$os"*
+                sudo rm -rf /home/$user/hornet/HORNET-"$latesthornet"_Linux_"$os"*
                 sudo -u $user wget -O /home/$user/hornet/latest-export.gz.bin $snapshot
                 sudo sed -i 's/\"useProfile\": \"auto\"/\"useProfile\": \"'$profile'\"/g' /home/$user/hornet/config.json
                 sudo sed -i 's/\"enabled\": false/\"enabled\": '$dashauth'/g' /home/$user/hornet/config.json
@@ -382,25 +390,26 @@ while [ $counter -lt 1 ]; do
                 sudo chmod 770 /home/$user/hornet/hornet
 
                 echo -e $TEXT_YELLOW && echo " Creating service for hornet..." && echo -e $TEXT_RESET
-                service=/lib/systemd/system/hornet.service
-                sudo echo "[Unit]" > $service
-                sudo echo "Description=HORNET Fullnode" >> $service
-                sudo echo "After=network.target" >> $service
-                sudo echo "" >> $service
-                sudo echo "[Service]" >> $service
-                sudo echo "WorkingDirectory=/home/$user/hornet" >> $service
-                sudo echo "User=$user" >> $service
-                sudo echo "TasksMax=infinity" >> $service
-                sudo echo "KillSignal=SIGTERM" >> $service
-                sudo echo "TimeoutStopSec=infinity" >> $service
-                sudo echo "ExecStart=/home/$user/hornet/hornet -c config" >> $service
-                sudo echo "SyslogIdentifier=HORNET" >> $service
-                sudo echo "Restart=on-failure" >> $service
-                sudo echo "RestartSec=1200" >> $service
-                sudo echo "" >> $service
-                sudo echo "[Install]" >> $service
-                sudo echo "WantedBy=multi-user.target" >> $service
-                sudo echo "Alias=hornet.service" >> $service
+                {
+                echo "[Unit]"
+                echo "Description=HORNET Fullnode"
+                echo "After=network.target"
+                echo ""
+                echo "[Service]"
+                echo "WorkingDirectory=/home/$user/hornet"
+                echo "User=$user"
+                echo "TasksMax=infinity"
+                echo "KillSignal=SIGTERM"
+                echo "TimeoutStopSec=infinity"
+                echo "ExecStart=/home/$user/hornet/hornet -c config"
+                echo "SyslogIdentifier=HORNET"
+                echo "Restart=on-failure"
+                echo "RestartSec=1200"
+                echo ""
+                echo "[Install]"
+                echo "WantedBy=multi-user.target"
+                echo "Alias=hornet.service"
+                } > /lib/systemd/system/hornet.service
 
                 echo -e $TEXT_YELLOW && echo " Activate hornet service..." && echo -e $TEXT_RESET
                 sudo systemctl daemon-reload
