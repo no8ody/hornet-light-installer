@@ -11,7 +11,7 @@ if [ "$check" = "active" ]; then
         sudo systemctl stop hornet
         sudo -u $user wget -qO- https://github.com/gohornet/hornet/releases/download/v$latesthornet/HORNET-"$latesthornet"_Linux_$os.tar.gz | sudo -u $user tar -xzf - -C /home/$user/hornet
         sudo mv /home/$user/hornet/HORNET-"$latesthornet"_Linux_$os/hornet /home/$user/hornet/
-        sudo rm -r /home/$user/hornet/HORNET-"$latesthornet"_Linux_$os
+        sudo rm -rf /home/$user/hornet/HORNET-"$latesthornet"_Linux_$os
         sudo chmod 770 /home/$user/hornet/hornet
         sudo systemctl start hornet
     fi
